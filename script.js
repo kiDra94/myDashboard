@@ -1,4 +1,4 @@
-(async () => {
+const getEuropMap = (async () => {
 
     const topology = await fetch(
         'https://code.highcharts.com/mapdata/custom/europe.topo.json'
@@ -20,7 +20,7 @@
     ];
 
     // Create the chart
-    Highcharts.mapChart('container', {
+    Highcharts.mapChart('container-map', {
         chart: {
             map: topology
         },
@@ -103,7 +103,7 @@ function setContent(id) {
             myData["series"] = [];
             console.log(myData);
             let chartline = {};
-            chartline["name"] = "EPEX-Spot-Preice"; 
+            chartline["name"] = "EPEX-Spot-Preice";
             let dataPoints = [];
             chartline["data"] = dataPoints;
             chartline.fillOpacity = 0.1;
@@ -116,6 +116,9 @@ function setContent(id) {
             Highcharts.chart("mychart", myData);
             writeTable();
         });
+    }
+    if (id == "map") {
+        $("#container-map").toggleClass("d-none");
     }
 
 }
@@ -141,7 +144,7 @@ function writeTable() {
 $(document).ready(() => { // document (dom) ready!
     // setContent("fetch");
     $("#fetch-link").click(() => { setContent('fetch') });//registering
-    $("#about-link").click(() => { setContent('about') });
+    $("#map-link").click(() => { setContent('map') });
     $("#redraw").click(() => {
         setContent("fetch");
     }
