@@ -118,7 +118,7 @@ function setContent(id) {
         });
     }
     if (id == "map") {
-        $("#container-map").toggleClass("d-none");
+        $("#map-content").toggleClass("d-none");
     }
 
 }
@@ -144,7 +144,7 @@ function writeTable() {
 $(document).ready(() => { // document (dom) ready!
     // setContent("fetch");
     $("#fetch-link").click(() => { setContent('fetch') });//registering
-    $("#map-link").click(() => { setContent('map') });
+    $("#map-link").click(() => { setContent('map'), getEuropMap });
     $("#redraw").click(() => {
         setContent("fetch");
     }
