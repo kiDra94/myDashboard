@@ -1,5 +1,4 @@
-const getEuropMap = (async () => {
-
+const getEuropMap = async () => {
     const topology = await fetch(
         'https://code.highcharts.com/mapdata/custom/europe.topo.json'
     ).then(response => response.json());
@@ -22,7 +21,8 @@ const getEuropMap = (async () => {
     // Create the chart
     Highcharts.mapChart('container-map', {
         chart: {
-            map: topology
+            map: topology,
+            height: 550  // Set the height of the chart
         },
 
         title: {
@@ -58,8 +58,7 @@ const getEuropMap = (async () => {
             }
         }]
     });
-
-})();
+};
 
 function printHeader() {
     let html = "<thead>";
@@ -71,6 +70,7 @@ function printHeader() {
     html += "</thead >";
     return html;
 }
+
 function printRow(priceObj) {
     let html = "<tr>";
     html += "<td>" +
@@ -81,6 +81,7 @@ function printRow(priceObj) {
     html += "</tr >";
     return html;
 }
+
 function setContent(id) {
     let contents = document.querySelectorAll(".content");
     let links = document.querySelectorAll(".nav-link");
@@ -91,13 +92,11 @@ function setContent(id) {
     };
     $("#" + id + "-content").removeClass("d-none");
 
-
     if (id == "fetch") {
         let url = "https://api.awattar.at/v1/marketdata?";
         url += "start=" + $("#from").val(); //$("#[name]") -> id
         url += "&end=" + $("#to").val();
         $.get(url).then((resp) => {
-
             let prices = resp.data;
             console.log(myData);
             myData["series"] = [];
@@ -110,46 +109,44 @@ function setContent(id) {
 
             prices.forEach((price) => {
                 dataPoints.push([price.start_timestamp, price.marketprice]);
-            }
-            );
+            });
             myData.series.push(chartline);
             Highcharts.chart("mychart", myData);
             writeTable();
         });
     }
+    
     if (id == "map") {
-        $("#map-content").toggleClass("d-none");
+        // Call the map function directly
+        getEuropMap();
     }
-
 }
 
 function writeTable() {
     let url = "https://api.awattar.at/v1/marketdata";
     $.get(url).then((resp) => {
-
         let prices = resp.data;
         console.log(prices);
         let html = printHeader();
         html += "<tbody>";
         prices.forEach(price => {
             html += printRow(price);
-
         });
         html += "</tbody>";
-        $("#mytable").append(html);
-
+        $("#mytable").html(html); // Changed from append to html to avoid duplication
     });
-    console.log("Achtung: dieser Code steht ach dem $.get wird aber vor .then ausgefuert")
+    console.log("Achtung: dieser Code steht ach dem $.get wird aber vor .then ausgefuert");
 }
+
 $(document).ready(() => { // document (dom) ready!
     // setContent("fetch");
-    $("#fetch-link").click(() => { setContent('fetch') });//registering
-    $("#map-link").click(() => { setContent('map'), getEuropMap });
+    $("#fetch-link").click(() => { setContent('fetch'); }); // Registering
+    $("#map-link").click(() => { setContent('map'); });     // Fixed map click handler
+    $("#contact-link").click(() => { setContent('contact'); }); // Added missing contact handler
+    
     $("#redraw").click(() => {
         setContent("fetch");
-    }
-    )
-
+    });
 });
 
 let myData = {
@@ -180,4 +177,4 @@ let myData = {
             color: '#FF0000' // Customize the color
         }
     }
-}
+};
