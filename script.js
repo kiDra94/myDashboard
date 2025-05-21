@@ -1,3 +1,5 @@
+const cors = require('cors');
+app.use(cors());
 const getEuropMap = async () => {
     const topology = await fetch(
         'https://code.highcharts.com/mapdata/custom/europe.topo.json'
@@ -99,7 +101,7 @@ function setContent(id) {
     $("#" + id + "-content").removeClass("d-none");
 
     if (id == "fetch") {
-        let url = 'https://api.allorigins.win/get?url=' +  encodeURIComponent('//api.energy-charts.info/public_power?country=de');
+        let url = '//api.energy-charts.info/public_power?country=de';
         url += "&start=" + $("#from").val(); //$("#[name]") -> id
         url += "&end=" + $("#to").val();
         // $.get(url).then((resp) => {
@@ -122,20 +124,13 @@ function setContent(id) {
         // });
         console.log(url);
         $.get(url).then((resp) => {
-            //console.log(resp);
-            if (Array.isArray(resp)) {
-                resp.forEach(item => {
-                    console.log(item);
-                });
-            } else {
-                console.log('Data:', resp);
-            }
+            console.log(resp);
         })
     }
     
     if (id == "map") {
         getEuropMap();
-        let strom_produktion
+        let strom_produktion;
     }
 }
 
