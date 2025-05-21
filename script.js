@@ -7,22 +7,22 @@ const getEuropMap = async () => {
     // property by default. See API docs for 'joinBy' for more info on linking
     // data and map.
     const data = [
-        ['dk', 10], ['fo', 11], ['hr', 12], ['nl', 13], ['ee', 14], ['bg', 15],
-        ['es', 16], ['it', 17], ['sm', 18], ['va', 19], ['tr', 20], ['mt', 21],
-        ['fr', 22], ['no', 23], ['de', 24], ['ie', 25], ['ua', 26], ['fi', 27],
-        ['se', 28], ['ru', 29], ['gb', 30], ['cy', 31], ['pt', 32], ['gr', 33],
-        ['lt', 34], ['si', 35], ['ba', 36], ['mc', 37], ['al', 38], ['cnm', 39],
-        ['nc', 40], ['rs', 41], ['ro', 42], ['me', 43], ['li', 44], ['at', 45],
-        ['sk', 46], ['hu', 47], ['ad', 48], ['lu', 49], ['ch', 50], ['be', 51],
-        ['kv', 52], ['pl', 53], ['mk', 54], ['lv', 55], ['by', 56], ['is', 57],
-        ['md', 58], ['cz', 59]
+        ['dk', 0], ['fo', 0], ['hr', 0], ['nl', 0], ['ee', 0], ['bg', 0],
+        ['es', 0], ['it', 0], ['sm', 0], ['va', 0], ['tr', 0], ['mt', 0],
+        ['fr', 0], ['no', 0], ['de', 0], ['ie', 0], ['ua', 0], ['fi', 0],
+        ['se', 0], ['ru', 1000], ['gb', 0], ['cy', 0], ['pt', 0], ['gr', 0],
+        ['lt', 0], ['si', 0], ['ba', 0], ['mc', 0], ['al', 0], ['cnm', 0],
+        ['nc', 0], ['rs', 0], ['ro', 0], ['me', 0], ['li', 0], ['at', 0],
+        ['sk', 0], ['hu', 0], ['ad', 0], ['lu', 0], ['ch', 0], ['be', 0],
+        ['kv', 0], ['pl', 0], ['mk', 0], ['lv', 0], ['by', 0], ['is', 0],
+        ['md', 0], ['cz', 0]
     ];
 
     // Create the chart
     Highcharts.mapChart('container-map', {
         chart: {
             map: topology,
-            height: 550  // Set the height of the chart
+            height: 700  // Set the height of the chart
         },
 
         title: {
@@ -41,7 +41,13 @@ const getEuropMap = async () => {
         },
 
         colorAxis: {
-            min: 0
+            min: -1,     // adjust based on your data range
+            max: 1,
+            stops: [
+                [0, '#cc6666'], // muted red
+                [0.5, '#cccccc'], // neutral gray
+                [1, '#66cc66']  // muted green
+            ]
         },
 
         series: [{
