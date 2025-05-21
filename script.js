@@ -99,31 +99,43 @@ function setContent(id) {
     $("#" + id + "-content").removeClass("d-none");
 
     if (id == "fetch") {
-        let url = "https://api.awattar.at/v1/marketdata?";
-        url += "start=" + $("#from").val(); //$("#[name]") -> id
+        let url = 'https://api.allorigins.win/get?url=' +  encodeURIComponent('//api.energy-charts.info/public_power?country=de');
+        url += "&start=" + $("#from").val(); //$("#[name]") -> id
         url += "&end=" + $("#to").val();
-        $.get(url).then((resp) => {
-            let prices = resp.data;
-            console.log(myData);
-            myData["series"] = [];
-            console.log(myData);
-            let chartline = {};
-            chartline["name"] = "EPEX-Spot-Preice";
-            let dataPoints = [];
-            chartline["data"] = dataPoints;
-            chartline.fillOpacity = 0.1;
+        // $.get(url).then((resp) => {
+        //     let prices = resp.data;
+        //     console.log(myData);
+        //     myData["series"] = [];
+        //     console.log(myData);
+        //     let chartline = {};
+        //     chartline["name"] = "EPEX-Spot-Preice";
+        //     let dataPoints = [];
+        //     chartline["data"] = dataPoints;
+        //     chartline.fillOpacity = 0.1;
 
-            prices.forEach((price) => {
-                dataPoints.push([price.start_timestamp, price.marketprice]);
-            });
-            myData.series.push(chartline);
-            Highcharts.chart("mychart", myData);
-            writeTable();
-        });
+        //     prices.forEach((price) => {
+        //         dataPoints.push([price.start_timestamp, price.marketprice]);
+        //     });
+        //     myData.series.push(chartline);
+        //     Highcharts.chart("mychart", myData);
+        //     writeTable();
+        // });
+        console.log(url);
+        $.get(url).then((resp) => {
+            //console.log(resp);
+            if (Array.isArray(resp)) {
+                resp.forEach(item => {
+                    console.log(item);
+                });
+            } else {
+                console.log('Data:', resp);
+            }
+        })
     }
     
     if (id == "map") {
         getEuropMap();
+        let strom_produktion
     }
 }
 
