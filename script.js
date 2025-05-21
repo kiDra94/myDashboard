@@ -1,5 +1,4 @@
-const cors = require('cors');
-app.use(cors());
+// Function to fetch and display European map
 const getEuropMap = async () => {
     const topology = await fetch(
         'https://code.highcharts.com/mapdata/custom/europe.topo.json'
@@ -68,6 +67,7 @@ const getEuropMap = async () => {
     });
 };
 
+// Function to create table header
 function printHeader() {
     let html = "<thead>";
     html += "<tr>";
@@ -75,10 +75,11 @@ function printHeader() {
     html += "<th scope='col'>Preis</th>";
     html += "<th scope='col'>Einheit</th>";
     html += "</tr>";
-    html += "</thead >";
+    html += "</thead>";
     return html;
 }
 
+// Function to create table row from price object
 function printRow(priceObj) {
     let html = "<tr>";
     html += "<td>" +
@@ -86,81 +87,130 @@ function printRow(priceObj) {
         + "</td>";
     html += "<td>" + priceObj.marketprice + "</td>";
     html += "<td>" + priceObj.unit + "</td>";
-    html += "</tr >";
+    html += "</tr>";
     return html;
 }
 
+// Function to handle content switching and data fetching
 function setContent(id) {
+    // Hide all content sections and show the selected one
     let contents = document.querySelectorAll(".content");
-    let links = document.querySelectorAll(".nav-link");
-
     for (let i = 0; i < contents.length; i++) {
-        let ele = contents[i];
-        ele.classList.add("d-none");
-    };
+        contents[i].classList.add("d-none");
+    }
     $("#" + id + "-content").removeClass("d-none");
 
-    if (id == "fetch") {
-        let url = '//api.energy-charts.info/public_power?country=de';
-        url += "&start=" + $("#from").val(); //$("#[name]") -> id
-        url += "&end=" + $("#to").val();
-        // $.get(url).then((resp) => {
-        //     let prices = resp.data;
-        //     console.log(myData);
-        //     myData["series"] = [];
-        //     console.log(myData);
-        //     let chartline = {};
-        //     chartline["name"] = "EPEX-Spot-Preice";
-        //     let dataPoints = [];
-        //     chartline["data"] = dataPoints;
-        //     chartline.fillOpacity = 0.1;
-
-        //     prices.forEach((price) => {
-        //         dataPoints.push([price.start_timestamp, price.marketprice]);
-        //     });
-        //     myData.series.push(chartline);
-        //     Highcharts.chart("mychart", myData);
-        //     writeTable();
-        // });
-        console.log(url);
-        $.get(url).then((resp) => {
-            console.log(resp);
-        })
-    }
-    
-    if (id == "map") {
+    // Handle specific content sections
+    if (id === "fetch") {
+        fetchAndDisplayData();
+    } else if (id === "map") {
         getEuropMap();
-        let strom_produktion;
     }
 }
 
-function writeTable() {
-    let url = "https://api.awattar.at/v1/marketdata";
-    $.get(url).then((resp) => {
-        let prices = resp.data;
-        console.log(prices);
-        let html = printHeader();
-        html += "<tbody>";
-        prices.forEach(price => {
-            html += printRow(price);
+// Function to fetch data from API and display it
+function fetchAndDisplayData() {
+    const fromDate = $("#from").val();
+    const toDate = $("#to").val();
+    
+    // Display loading message
+    $("#mychart").html("<p class='border p-2 rounded'>Loading data...</p>");
+    
+    // Base URL - using our local server as a proxy
+    let url = '/api/power';
+    url += "?country=de";
+    url += "&start=" + fromDate;
+    url += "&end=" + toDate;
+    
+    // Fetch data and process it
+    $.get(url)
+        .then((resp) => {
+            if (!resp || !resp.data || resp.data.length === 0) {
+                $("#mychart").html("<p class='border p-2 rounded text-danger'>No data available for the selected period</p>");
+                return;
+            }
+            
+            // Process data for chart
+            console.log("Data received:", resp);
+            
+            // Prepare chart data
+            myData.series = [];
+            let chartline = {
+                name: "EPEX-Spot-Prices",
+                data: [],
+                fillOpacity: 0.1
+            };
+            
+            // Convert API data to chart points
+            resp.data.forEach((price) => {
+                if (price.marketprice !== undefined) {
+                    chartline.data.push([price.start_timestamp, price.marketprice]);
+                }
+            });
+            
+            // Add the series to chart data
+            myData.series.push(chartline);
+            
+            // Create the chart
+            Highcharts.chart("mychart", myData);
+            
+            // Update the table with the same data
+            writeTable();
+        })
+        .catch((error) => {
+            console.error("Error fetching data:", error);
+            $("#mychart").html("<p class='border p-2 rounded text-danger'>Error fetching data. Please try again later.</p>");
         });
-        html += "</tbody>";
-        $("#mytable").html(html); // Changed from append to html to avoid duplication
-    });
-    console.log("Achtung: dieser Code steht ach dem $.get wird aber vor .then ausgefuert");
 }
 
-$(document).ready(() => { // document (dom) ready!
-    // setContent("fetch");
+// Function to update the data table
+function writeTable() {
+    // Fetch market data from our proxy endpoint
+    let url = "/api/marketdata";
+    $.get(url)
+        .then((resp) => {
+            if (!resp || !resp.data || resp.data.length === 0) {
+                $("#mytable").html("<p>No market data available</p>");
+                return;
+            }
+            
+            // Process the data and create HTML
+            let prices = resp.data;
+            console.log("Market prices:", prices);
+            
+            let html = printHeader();
+            html += "<tbody>";
+            prices.forEach(price => {
+                html += printRow(price);
+            });
+            html += "</tbody>";
+            
+            // Update the table
+            $("#mytable").html(html);
+        })
+        .catch((error) => {
+            console.error("Error fetching market data:", error);
+            $("#mytable").html("<p class='text-danger'>Error loading market data</p>");
+        });
+}
+
+// Initialize when document is ready
+$(document).ready(() => {
+    // Set up click handlers for navigation
     $("#fetch-link").click(() => { setContent('fetch'); });
     $("#map-link").click(() => { setContent('map'); });
     $("#contact-link").click(() => { setContent('contact'); });
     
+    // Set up redraw button
     $("#redraw").click(() => {
-        setContent("fetch");
+        fetchAndDisplayData();
     });
+    
+    // Set initial content to fetch
+    setContent("fetch");
 });
 
+// Chart configuration
 let myData = {
     chart: {
         type: 'area',
@@ -172,21 +222,27 @@ let myData = {
         text: 'Strompreise von EPEX-Spot'
     },
     subtitle: {
-        text: 'we are now better'
+        text: 'Energy Price Chart'
     },
     xAxis: {
-        type: 'datetime' // In ms [epochalzeot]
+        type: 'datetime'
     },
     yAxis: {
         title: {
             text: 'Preis (€/MWh)'
         }
     },
+    tooltip: {
+        formatter: function() {
+            return Highcharts.dateFormat('%e. %b %Y, %H:%M', this.x) + '<br/>' +
+                   this.series.name + ': <b>' + this.y.toFixed(2) + ' €/MWh</b>';
+        }
+    },
     navigator: {
-        enabled: true, // Enable the navigator
+        enabled: true,
         series: {
-            type: 'line', // Customize the series type
-            color: '#FF0000' // Customize the color
+            type: 'line',
+            color: '#FF0000'
         }
     }
 };
