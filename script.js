@@ -7,10 +7,10 @@ const getEuropMap = async () => {
     // property by default. See API docs for 'joinBy' for more info on linking
     // data and map.
     const data = [
-        ['dk', 0], ['fo', 0], ['hr', 0], ['nl', 0], ['ee', 0], ['bg', 0],
-        ['es', 0], ['it', 0], ['sm', 0], ['va', 0], ['tr', 0], ['mt', 0],
+        ['dk', -1], ['fo', 0], ['hr', 0], ['nl', 0], ['ee', 0], ['bg', 0],
+        ['es', -0.5], ['it', 0.5], ['sm', 0], ['va', 0], ['tr', 0], ['mt', 0],
         ['fr', 0], ['no', 0], ['de', 0], ['ie', 0], ['ua', 0], ['fi', 0],
-        ['se', 0], ['ru', 1000], ['gb', 0], ['cy', 0], ['pt', 0], ['gr', 0],
+        ['se', 0], ['ru', 1], ['gb', 0], ['cy', 0], ['pt', 0], ['gr', 0],
         ['lt', 0], ['si', 0], ['ba', 0], ['mc', 0], ['al', 0], ['cnm', 0],
         ['nc', 0], ['rs', 0], ['ro', 0], ['me', 0], ['li', 0], ['at', 0],
         ['sk', 0], ['hu', 0], ['ad', 0], ['lu', 0], ['ch', 0], ['be', 0],
@@ -22,7 +22,7 @@ const getEuropMap = async () => {
     Highcharts.mapChart('container-map', {
         chart: {
             map: topology,
-            height: 700  // Set the height of the chart
+            height: 700
         },
 
         title: {
@@ -41,12 +41,12 @@ const getEuropMap = async () => {
         },
 
         colorAxis: {
-            min: -1,     // adjust based on your data range
+            min: -1,
             max: 1,
             stops: [
-                [0, '#cc6666'], // muted red
-                [0.5, '#cccccc'], // neutral gray
-                [1, '#66cc66']  // muted green
+                [0, '#ff6666'],
+                [0.5, '#cccccc'],
+                [1, '#66ff66']
             ]
         },
 
@@ -123,7 +123,6 @@ function setContent(id) {
     }
     
     if (id == "map") {
-        // Call the map function directly
         getEuropMap();
     }
 }
@@ -146,9 +145,9 @@ function writeTable() {
 
 $(document).ready(() => { // document (dom) ready!
     // setContent("fetch");
-    $("#fetch-link").click(() => { setContent('fetch'); }); // Registering
-    $("#map-link").click(() => { setContent('map'); });     // Fixed map click handler
-    $("#contact-link").click(() => { setContent('contact'); }); // Added missing contact handler
+    $("#fetch-link").click(() => { setContent('fetch'); });
+    $("#map-link").click(() => { setContent('map'); });
+    $("#contact-link").click(() => { setContent('contact'); });
     
     $("#redraw").click(() => {
         setContent("fetch");
