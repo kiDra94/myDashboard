@@ -114,10 +114,11 @@ app.get('/api/power', async (req, res) => {
 // Add endpoint for awattar market data proxy
 app.get('/api/price', async (req, res) => {
   try {
-
     const bzn = req.query.bzn || 'AT'; // Default to Germany if not specified
     const start = req.query.start || ''; // Optional start date
     const end = req.query.end || ''; // Optional end date
+
+    let url = `https://api.energy-charts.info/price?bzn=${bzn}`;
 
     if (start) url += `&start=${start}`;
     if (end) url += `&end=${end}`;
@@ -129,7 +130,6 @@ app.get('/api/price', async (req, res) => {
       });
     }
 
-    let url = `https://api.energy-charts.info/price=${bzn}`;
     const response = await fetch(url, {
       method: 'GET',
       headers: {
@@ -155,20 +155,6 @@ app.get('/api/price', async (req, res) => {
   }
 });
 
-// Add endpoint to get available countries (this is just an example)
-app.get('/api/countries', (req, res) => {
-  res.json({
-    countries: [
-      { code: 'de', name: 'Germany' },
-      { code: 'fr', name: 'France' },
-      { code: 'uk', name: 'United Kingdom' },
-      { code: 'es', name: 'Spain' },
-      { code: 'it', name: 'Italy' },
-      // Add more countries as needed
-    ]
-  });
-});
-
 // Status endpoint for quick health check
 app.get('/status', (req, res) => {
   res.json({
@@ -187,5 +173,6 @@ app.use((req, res) => {
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
   console.log(`Energy data available at http://localhost:${port}/api/power`);
+  console.log(`Energy data available at http://localhost:${port}/api/price`);
   console.log(`Example: http://localhost:${port}/api/power?country=de`);
 });
