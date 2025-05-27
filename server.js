@@ -35,8 +35,14 @@ app.use((req, res, next) => {
 
 // Validate country code
 function isValidCountry(country) {
-  // List of valid country codes (expand as needed)
-  const validCountries = ['de', 'fr', 'uk', 'es', 'it', 'nl', 'be', 'at', 'ch', 'dk', 'se', 'no', 'fi', 'pt', 'gr', 'ie'];
+  // Complete list of valid country codes
+  const validCountries = [
+    'dk', 'fo', 'hr', 'nl', 'ee', 'bg', 'es', 'it', 'sm', 'va', 'tr', 'mt',
+    'fr', 'no', 'de', 'ie', 'ua', 'fi', 'se', 'ru', 'gb', 'cy', 'pt', 'gr',
+    'lt', 'si', 'ba', 'mc', 'al', 'cnm', 'nc', 'rs', 'ro', 'me', 'li', 'at',
+    'sk', 'hu', 'ad', 'lu', 'ch', 'be', 'kv', 'pl', 'mk', 'lv', 'by', 'is',
+    'md', 'cz'
+  ];
   return validCountries.includes(country.toLowerCase());
 }
 
@@ -45,7 +51,6 @@ app.get('/api/power', async (req, res) => {
   try {
     // Get parameters from query string
     const country = req.query.country || 'de'; // Default to Germany if not specified
-    const resolution = req.query.resolution || 'hourly'; // Optional resolution parameter
     const start = req.query.start || ''; // Optional start date
     const end = req.query.end || ''; // Optional end date
     
@@ -61,7 +66,6 @@ app.get('/api/power', async (req, res) => {
     let url = `https://api.energy-charts.info/public_power?country=${country.toLowerCase()}`;
     
     // Add optional parameters if provided
-    if (resolution) url += `&resolution=${resolution}`;
     if (start) url += `&start=${start}`;
     if (end) url += `&end=${end}`;
     
