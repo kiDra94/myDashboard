@@ -40,20 +40,8 @@ function isValidCountry(country) {
   return validCountries.includes(country.toLowerCase());
 }
 
-// Function to create AbortController for timeout (for older Node.js versions)
-function createTimeoutController(timeoutMs) {
-  const controller = new AbortController();
-  const timeoutId = setTimeout(() => {
-    controller.abort();
-  }, timeoutMs);
-  
-  return { controller, timeoutId };
-}
-
 // Generic API endpoint that supports different parameters
 app.get('/api/power', async (req, res) => {
-  let timeoutId;
-  
   try {
     // Get parameters from query string
     const country = req.query.country || 'de'; // Default to Germany if not specified
@@ -79,65 +67,77 @@ app.get('/api/power', async (req, res) => {
     
     console.log(`Fetching data from: ${url}`);
     
-    // Create timeout controller
-    const { controller, timeoutId: tid } = createTimeoutController(15000); // 15 second timeout
-    timeoutId = tid;
-    
-    // Prepare fetch options
-    const fetchOptions = {
+    const response = await fetch(url, {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
         'User-Agent': 'Express-Energy-Proxy/1.0'
       },
-      signal: controller.signal
-    };
-    
-    const response = await fetch(url, fetchOptions);
-    
-    // Clear timeout since request completed
-    clearTimeout(timeoutId);
+      timeout: 10000 // 10 second timeout
+    });
     
     // Check if the response is successful
     if (!response.ok) {
-      const errorText = await response.text().catch(() => 'Unknown error');
-      throw new Error(`API responded with status: ${response.status}. Response: ${errorText}`);
+      throw new Error(`API responded with status: ${response.status}`);
     }
     
     // Parse the JSON response
     const data = await response.json();
-    console.log(`Successfully fetched data for country: ${country}. Records: ${data.unix_seconds ? data.unix_seconds.length : 0}`);
+    console.log(`Successfully fetched data for country: ${country}`);
     
     // Return the data to the client
     res.json(data);
     
   } catch (error) {
-    // Clear timeout if it exists
-    if (timeoutId) {
-      clearTimeout(timeoutId);
-    }
-    
     console.error('Error fetching power data:', error);
-    
-    // Handle different types of errors
-    if (error.name === 'AbortError') {
-      res.status(408).json({ 
-        error: 'Request timeout',
-        message: 'The API request took too long to respond. Please try again.'
-      });
-    } else if (error.message.includes('ENOTFOUND') || error.message.includes('ECONNREFUSED')) {
-      res.status(503).json({ 
-        error: 'Service unavailable',
-        message: 'Unable to reach the energy data API. Please try again later.'
-      });
-    } else {
-      res.status(500).json({ 
-        error: 'Failed to fetch data',
-        message: error.message,
-        stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
-      });
-    }
+    res.status(500).json({ 
+      error: 'Failed to fetch data',
+      message: error.message,
+      stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
+    });
   }
+});
+
+// Add endpoint for awattar market data proxy
+app.get('/api/marketdata', async (req, res) => {
+  try {
+    const response = await fetch('https://api.awattar.at/v1/marketdata', {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'User-Agent': 'Express-Energy-Proxy/1.0'
+      },
+      timeout: 5000
+    });
+    
+    if (!response.ok) {
+      throw new Error(`API responded with status: ${response.status}`);
+    }
+    
+    const data = await response.json();
+    res.json(data);
+    
+  } catch (error) {
+    console.error('Error fetching market data:', error);
+    res.status(500).json({ 
+      error: 'Failed to fetch market data',
+      message: error.message
+    });
+  }
+});
+
+// Add endpoint to get available countries (this is just an example)
+app.get('/api/countries', (req, res) => {
+  res.json({
+    countries: [
+      { code: 'de', name: 'Germany' },
+      { code: 'fr', name: 'France' },
+      { code: 'uk', name: 'United Kingdom' },
+      { code: 'es', name: 'Spain' },
+      { code: 'it', name: 'Italy' },
+      // Add more countries as needed
+    ]
+  });
 });
 
 // Status endpoint for quick health check
@@ -145,43 +145,8 @@ app.get('/status', (req, res) => {
   res.json({ 
     status: 'Server is running',
     version: '1.1.0',
-    nodeVersion: process.version,
-    timestamp: new Date().toISOString()
+    nodeVersion: process.version
   });
-});
-
-// Test endpoint to verify the external API
-app.get('/api/test', async (req, res) => {
-  try {
-    const testUrl = 'https://api.energy-charts.info/public_power?country=de';
-    console.log(`Testing connection to: ${testUrl}`);
-    
-    const { controller, timeoutId } = createTimeoutController(10000);
-    
-    const response = await fetch(testUrl, {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json',
-        'User-Agent': 'Express-Energy-Proxy/1.0'
-      },
-      signal: controller.signal
-    });
-    
-    clearTimeout(timeoutId);
-    
-    res.json({
-      status: 'API connection test successful',
-      statusCode: response.status,
-      headers: Object.fromEntries(response.headers.entries())
-    });
-    
-  } catch (error) {
-    console.error('API test failed:', error);
-    res.status(500).json({
-      status: 'API connection test failed',
-      error: error.message
-    });
-  }
 });
 
 // Handle 404 errors
@@ -189,19 +154,9 @@ app.use((req, res) => {
   res.status(404).json({ error: 'Endpoint not found' });
 });
 
-// Global error handler
-app.use((error, req, res, next) => {
-  console.error('Unhandled error:', error);
-  res.status(500).json({
-    error: 'Internal server error',
-    message: process.env.NODE_ENV === 'development' ? error.message : 'Something went wrong'
-  });
-});
-
 // Start the server
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
   console.log(`Energy data available at http://localhost:${port}/api/power`);
-  console.log(`Test API connection at http://localhost:${port}/api/test`);
-  console.log(`Example: http://localhost:${port}/api/power?country=de&start=2024-01-01&end=2024-01-02`);
+  console.log(`Example: http://localhost:${port}/api/power?country=de`);
 });
