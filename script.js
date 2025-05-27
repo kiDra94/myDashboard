@@ -56,6 +56,7 @@ function setContent(id) {
             writeTable();
         });
     }
+    if (id = "map"){getEuropMap()};
 
 }
 
@@ -78,9 +79,8 @@ function writeTable() {
     console.log("Achtung: dieser Code steht ach dem $.get wird aber vor .then ausgefuert")
 }
 $(document).ready(() => { // document (dom) ready!
-    // setContent("fetch");
     $("#fetch-link").click(() => { setContent('fetch') });//registering
-    $("#about-link").click(() => { setContent('about') });
+    $("#map-link").click(() => { setContent('map') });
     $("#redraw").click(() => {
         setContent("fetch");
     }
