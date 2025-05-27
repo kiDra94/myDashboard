@@ -30,7 +30,7 @@ function setContent(id) {
 
 
     if (id == "fetch") {
-        let url = "https://api.awattar.at/v1/marketdata?";
+        let url = "https://api.energy-charts.info/price?";
         url += "start=" + $("#from").val(); //$("#[name]") -> id
         url += "&end=" + $("#to").val();
         $.get(url).then((resp) => {

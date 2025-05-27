@@ -46,6 +46,15 @@ function isValidCountry(country) {
   return validCountries.includes(country.toLowerCase());
 }
 
+function isValidBzn(bzn) {
+  const validBzn = [
+    "AT", "BE", "CH", "CZ", "DE-LU", "DE-AT-LU",
+    "DK1", "DK2", "FR", "HU", "IT-North", "NL",
+    "NO2", "PL", "SE4", "SI"
+  ];
+  
+  return validBzn.includes(bzn);
+}
 // Generic API endpoint that supports different parameters
 app.get('/api/power', async (req, res) => {
   try {
@@ -53,24 +62,24 @@ app.get('/api/power', async (req, res) => {
     const country = req.query.country || 'de'; // Default to Germany if not specified
     const start = req.query.start || ''; // Optional start date
     const end = req.query.end || ''; // Optional end date
-    
+
     // Basic validation
     if (!isValidCountry(country)) {
-      return res.status(400).json({ 
+      return res.status(400).json({
         error: 'Invalid country code',
         message: 'Please provide a valid country code (e.g., de, fr, uk)'
       });
     }
-    
+
     // Build the URL with query parameters
     let url = `https://api.energy-charts.info/public_power?country=${country.toLowerCase()}`;
-    
+
     // Add optional parameters if provided
     if (start) url += `&start=${start}`;
     if (end) url += `&end=${end}`;
-    
+
     console.log(`Fetching data from: ${url}`);
-    
+
     const response = await fetch(url, {
       method: 'GET',
       headers: {
@@ -79,22 +88,22 @@ app.get('/api/power', async (req, res) => {
       },
       timeout: 10000 // 10 second timeout
     });
-    
+
     // Check if the response is successful
     if (!response.ok) {
       throw new Error(`API responded with status: ${response.status}`);
     }
-    
+
     // Parse the JSON response
     const data = await response.json();
     console.log(`Successfully fetched data for country: ${country}`);
-    
+
     // Return the data to the client
     res.json(data);
-    
+
   } catch (error) {
     console.error('Error fetching power data:', error);
-    res.status(500).json({ 
+    res.status(500).json({
       error: 'Failed to fetch data',
       message: error.message,
       stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
@@ -103,9 +112,25 @@ app.get('/api/power', async (req, res) => {
 });
 
 // Add endpoint for awattar market data proxy
-app.get('/api/marketdata', async (req, res) => {
+app.get('/api/price', async (req, res) => {
   try {
-    const response = await fetch('https://api.awattar.at/v1/marketdata', {
+
+    const bzn = req.query.bzn || 'AT'; // Default to Germany if not specified
+    const start = req.query.start || ''; // Optional start date
+    const end = req.query.end || ''; // Optional end date
+
+    if (start) url += `&start=${start}`;
+    if (end) url += `&end=${end}`;
+
+    if (!isValidBzn(bzn)) {
+      return res.status(400).json({
+        error: 'Invalid country code',
+        message: 'Please provide a valid country code (e.g., de, fr, uk)'
+      });
+    }
+
+    let url = `https://api.energy-charts.info/price=${bzn}`;
+    const response = await fetch(url, {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
@@ -113,17 +138,17 @@ app.get('/api/marketdata', async (req, res) => {
       },
       timeout: 5000
     });
-    
+
     if (!response.ok) {
       throw new Error(`API responded with status: ${response.status}`);
     }
-    
+
     const data = await response.json();
     res.json(data);
-    
+
   } catch (error) {
     console.error('Error fetching market data:', error);
-    res.status(500).json({ 
+    res.status(500).json({
       error: 'Failed to fetch market data',
       message: error.message
     });
@@ -146,7 +171,7 @@ app.get('/api/countries', (req, res) => {
 
 // Status endpoint for quick health check
 app.get('/status', (req, res) => {
-  res.json({ 
+  res.json({
     status: 'Server is running',
     version: '1.1.0',
     nodeVersion: process.version
