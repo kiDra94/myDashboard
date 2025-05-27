@@ -1,3 +1,9 @@
+const regions = [
+    "AT", "BE", "CH", "CZ", "DE-LU", "DE-AT-LU",
+    "DK1", "DK2", "FR", "HU", "IT-North", "NL",
+    "NO2", "PL", "SE4", "SI"
+  ];
+
 function printHeader() {
     let html = "<thead>";
     html += "<tr>";
