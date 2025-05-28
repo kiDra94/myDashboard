@@ -14,6 +14,23 @@ window.addEventListener('DOMContentLoaded', () => {
     });
 
     bznSelect.value = 'AT'; // Set default
+
+    const pieChartsSelect = document.getElementById('country-public-power');
+    const apiCountry = [
+        "al", "am", "at", "ba", "be", "bg", "by", "ch", "cz", "de", "dk", "ee", "es", "fi", "fr",
+        "gb", "ge", "gr", "hr", "hu", "ie", "it", "lt", "lu", "lv", "md", "me", "mk", "nl", "no",
+        "pl", "pt", "ro", "rs", "ru", "se", "si", "sk", "tr", "ua", "xk", "eu27", "all"
+    ];
+
+    apiCountry.forEach(country => {
+        const option = document.createElement('option');
+        option.value = country.toUpperCase();
+        option.textContent = country.toUpperCase();
+        pieChartsSelect.appendChild(option);
+    });
+
+    pieChartsSelect.value = 'AT';
+
 });
 
 function setContent(id) {
