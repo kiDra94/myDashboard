@@ -171,7 +171,7 @@ app.use((req, res) => {
 
 // Start the server
 app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
+  console.log(`Server running at http://localhost:${port}/index.html`);
   console.log(`Energy data available at http://localhost:${port}/api/power`);
   console.log(`Energy data available at http://localhost:${port}/api/price`);
   console.log(`Example: http://localhost:${port}/api/power?country=de`);
