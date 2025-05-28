@@ -16,6 +16,7 @@
             align-items: center;
             height: 200px;
         }
+
         .nav-link.active {
             font-weight: bold;
             color: #0d6efd !important;
@@ -59,7 +60,7 @@
                             <label class="input-group-text" for="country">Country</label>
                             <select class="form-select" id="country">
                             </select>
-                          </div>
+                        </div>
                         <div class="btn-group me-2" role="group" aria-label="First group">
                             <span class="input-group-text">From</span>
                             <input type="date" class="form-control" id="from" value="2024-01-01">
@@ -72,7 +73,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <!-- Chart container -->
             <div class="card mb-4">
                 <div class="card-header">
@@ -84,18 +85,18 @@
                     </div>
                 </div>
             </div>
-            
+
             <!-- Table container -->
             <div class="card">
                 <div class="card-header">
                     Energy Price Data
                 </div>
                 <div class="card-body">
-                    <table id="mytable" class="table table-hover table-striped"></table>
+                    <table id="mytable" class="table table-hover table-striped table-sm"></table>
                 </div>
             </div>
         </div>
-        
+
         <!-- Section 2: Map View -->
         <div id="map-content" class="content d-none">
             <h4>European Energy Map</h4>
@@ -105,7 +106,7 @@
                 </div>
             </div>
         </div>
-        
+
         <!-- Section 3: Contact -->
         <div id="contact-content" class="content d-none">
             <h4>Contact Information</h4>
@@ -136,13 +137,14 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO"
         crossorigin="anonymous"></script>
-    
-    <!-- Load Highcharts first, then maps module -->
+
+    <!-- Load Highcharts first, then maps module, DataTable module -->
     <script src="https://code.highcharts.com/highcharts.js"></script>
     <script src="https://code.highcharts.com/maps/modules/map.js"></script>
     <script src="https://code.highcharts.com/maps/modules/exporting.js"></script>
     <script src="https://code.highcharts.com/modules/export-data.js"></script>
-    
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
     <script src="script.js"></script>
 </body>
 

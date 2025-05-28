@@ -70,28 +70,38 @@ function writeTable(country, start, end) {
     url += "bzn=" + country;
     url += "&start=" + start;
     url += "&end=" + end;
-    $("#mytable tbody").remove();
-    $("#mytable thead").remove();
-    $.get(url).then((resp) => {
 
-        let prices = resp;
+    // Destroy old table if DataTable was initialized
+    if ($.fn.DataTable.isDataTable("#mytable")) {
+        $('#mytable').DataTable().destroy();
+    }
+
+    $("#mytable").empty(); // Clears full table
+
+    $.get(url).then((resp) => {
         let html = printHeader();
         html += "<tbody>";
         for (let i = 0; i < resp.price.length; i++) {
             html += printRow(resp.unix_seconds[i], resp.price[i], resp.unit);
         }
         html += "</tbody>";
-        html += "</tbody>";
-        $("#mytable").append(html);
+        $("#mytable").html(html);
 
+        // Initialize DataTable after table is populated
+        $('#mytable').DataTable({
+            pageLength: 15,
+            lengthChange: false,
+            dom: '<"top"f>rt<"bottom"lip><"clear">'
+        });
     });
 }
+
 function printHeader() {
     let html = "<thead>";
     html += "<tr>";
-    html += "<th scope='col'>Zeit</th>";
-    html += "<th scope='col'>Preis</th>";
-    html += "<th scope='col'>Einheit</th>";
+    html += "<th scope='col'>Time</th>";
+    html += "<th scope='col'>Value</th>";
+    html += "<th scope='col'>Unit</th>";
     html += "</tr>";
     html += "</thead >";
     return html;
