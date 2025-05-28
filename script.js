@@ -105,7 +105,10 @@ function setContent(id) {
                     y: avg(type.data)
                 }))
             }];
-
+            //console.log(publicPower.production_type)
+            let totalSum = 0;
+            publicPower.production_types.forEach(type => { totalSum += sum(type.data)});
+            myPieChartData.custom = totalSum;
             myPieChartData.series = newSeries;
 
             myPieChartData.title.text = `Production Mix - ${$("#country-public-power").val()}`;
@@ -284,12 +287,13 @@ let myPieChartData = {
                 const chart = this,
                     series = chart.series[0];
                 let customLabel = chart.options.chart.custom.label;
+                const totalSum = chart.custom;
+                console.log(chart.custom);
 
                 if (!customLabel) {
                     customLabel = chart.options.chart.custom.label =
                         chart.renderer.label(
-                            'Total<br/>' +
-                            '<strong>2 877 820</strong>'
+                            '<strong>' + totalSum + '</strong>'
                         )
                             .css({
                                 color: '#000',
@@ -325,7 +329,7 @@ let myPieChartData = {
         text: 'Source: <a href="https://api.energy-charts.info">Energy charts</a>'
     },
     tooltip: {
-        pointFormat: '{series.name}: <b>{point.percentage:.0f}%</b>'
+        pointFormat: '<b>{point.percentage:.0f}% of total production</b>'
     },
     legend: {
         enabled: false
