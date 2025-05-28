@@ -93,14 +93,25 @@ function setContent(id) {
         url += "&end=" + end;
 
         $.get(url).then((resp) => {
-             let publicPower = {};
-             publicPower = resp;
-             myPieChartData.series.data = [];
-             publicPower.production_types.forEach(type => {
-                myPieChartData.series.data.push({name : type.name, y: avg(type.data)})
-             })
+            const publicPower = resp;
+
+            const newSeries = [{
+                name: 'Production Type',
+                colorByPoint: true,
+                innerSize: '60%',
+                data: publicPower.production_types.map(type => ({
+                    name: type.name,
+                    y: avg(type.data)
+                }))
+            }];
+
+            myPieChartData.series = newSeries;
+
+            myPieChartData.title.text = `Production Mix - ${$("#country-public-power").val()}`;
+            
+            Highcharts.chart('container', myPieChartData);
         });
-        getPieChart();
+
     };
 
 }
@@ -161,11 +172,8 @@ $(document).ready(() => { // document (dom) ready!
     $("#fetch-link").click(() => { setContent('fetch') });//registering
     $("#map-link").click(() => { setContent('map') });
     $("#other-link").click(() => { setContent('other') });
-    $("#redraw").click(() => {
-        setContent("fetch");
-    }
-    )
-
+    $("#redraw").click(() => { setContent('fetch'); });
+    $("#redraw-other").click(() => { setContent('other'); })
 });
 
 let myData = {
@@ -340,25 +348,7 @@ let myPieChartData = {
             }],
             showInLegend: true
         }
-    },
-    series: [{
-        name: 'Prouction Typ',
-        colorByPoint: true,
-        innerSize: '60%',
-        data: [{
-            name: 'EV',
-            y: 23.9
-        }, {
-            name: 'Hybrids',
-            y: 12.6
-        }, {
-            name: 'Diesel',
-            y: 37.0
-        }, {
-            name: 'Petrol',
-            y: 26.4
-        }]
-    }]
+    }
 }
 
 const getPieChart = async () => { Highcharts.chart('container', myPieChartData) }
