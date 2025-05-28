@@ -107,13 +107,28 @@
             </div>
         </div>
 
-        <!-- Section 3: Contact -->
+        <!-- Section 3: Other -->
         <div id="other-content" class="content d-none">
+            <div class="btn-toolbar mb-3" role="toolbar" aria-label="Toolbar with date inputs">
+                <div class="btn-group me-2" role="group" aria-label="Country selector">
+                    <label class="input-group-text" for="country">Country</label>
+                    <select class="form-select" id="country-public-power">
+                    </select>
+                </div>
+                <div class="btn-group me-2" role="group" aria-label="First group">
+                    <span class="input-group-text">From</span>
+                    <input type="date" class="form-control" id="from-public-power" value="2024-01-01">
+                </div>
+                <div class="btn-group me-2" role="group" aria-label="Second group">
+                    <span class="input-group-text">To</span>
+                    <input type="date" class="form-control" id="to-public-power" value="2024-02-01">
+                </div>
+                <button type="button" class="btn btn-primary" id="redraw">Fetch Data</button>
+            </div>
             <figure class="highcharts-figure">
                 <div id="container"></div>
                 <p class="highcharts-description">
-                    In Highcharts, pie charts can also feature an empty center, they are
-                    often referred to as donut charts.
+                    The public net electricity production for a given country for each production type.
                 </p>
             </figure>
         </div>
