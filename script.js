@@ -33,7 +33,8 @@ window.addEventListener('DOMContentLoaded', () => {
 
 });
 
-const avg = arr => arr.reduce((a, b) => a + b, 0) / arr.length;
+const sum = arr => arr.reduce((a, b) => a + b, 0);
+const avg = arr => sum(arr) / arr.length;
 
 
 function setContent(id) {
@@ -318,7 +319,7 @@ let myPieChartData = {
         }
     },
     title: {
-        text: '2023 Norway car registrations'
+        text: ''
     },
     subtitle: {
         text: 'Source: <a href="https://api.energy-charts.info">Energy charts</a>'
