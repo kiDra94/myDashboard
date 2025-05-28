@@ -100,7 +100,7 @@ function setContent(id) {
                 name: 'Production Type',
                 colorByPoint: true,
                 innerSize: '60%',
-                data: publicPower.production_types.map(type => ({
+                data: publicPower.production_types.filter(type => avg(type.data) > 0).map(type => ({
                     name: type.name,
                     y: avg(type.data)
                 }))
@@ -108,7 +108,7 @@ function setContent(id) {
             //console.log(publicPower.production_type)
             let totalSum = 0;
             publicPower.production_types.forEach(type => { totalSum += sum(type.data)});
-            myPieChartData.custom = totalSum;
+            myPieChartData.chart.custom = {'sum': parseInt(totalSum)};
             myPieChartData.series = newSeries;
 
             myPieChartData.title.text = `Production Mix - ${$("#country-public-power").val()}`;
@@ -287,13 +287,12 @@ let myPieChartData = {
                 const chart = this,
                     series = chart.series[0];
                 let customLabel = chart.options.chart.custom.label;
-                const totalSum = chart.custom;
-                console.log(chart.custom);
+                const totalSum = chart.options.chart.custom.sum || 0;
 
                 if (!customLabel) {
                     customLabel = chart.options.chart.custom.label =
                         chart.renderer.label(
-                            '<strong>' + totalSum + '</strong>'
+                            '<strong>' + totalSum + '<br>MW</br>' + '</strong>'
                         )
                             .css({
                                 color: '#000',
