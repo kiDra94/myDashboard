@@ -33,6 +33,9 @@ window.addEventListener('DOMContentLoaded', () => {
 
 });
 
+const avg = arr => arr.reduce((a, b) => a + b, 0) / arr.length;
+
+
 function setContent(id) {
     let contents = document.querySelectorAll(".content");
     let links = document.querySelectorAll(".nav-link");
@@ -80,34 +83,23 @@ function setContent(id) {
     }
     if (id = "map") { getEuropMap() };
     if (id = "other") {
-        // const country = $("#country").val();
-        // const start = $("#from").val();
-        // const end = $("#to").val();
+        const country = $("#country-public-power").val();
+        const start = $("#from-public-power").val();
+        const end = $("#to-public-power").val();
 
-        // let url = "http://localhost:3000//api/power'?";
-        // url += "bzn=" + country;
-        // url += "&start=" + start;
-        // url += "&end=" + end;
+        let url = "http://localhost:3000//api/power?";
+        url += "country=" + country.toLowerCase();
+        url += "&start=" + start;
+        url += "&end=" + end;
 
-        // $.get(url).then((resp) => {
-        //     let prices = {};
-        //     prices = resp;
-        //     myData.series = [];
-
-        //     let chartline = {
-        //         name: "Day-ahead spot market price ",
-        //         data: [],
-        //         fillOpacity: 0.1
-        //     };
-
-        //     for (let i = 0; i < prices.unix_seconds.length; i++) {
-        //         let timestamp = prices.unix_seconds[i] * 1000; // Convert to milliseconds
-        //         let marketprice = prices.price[i];
-        //         chartline.data.push([timestamp, marketprice]);
-        //     }
-
-        //     myData.series.push(chartline);
-        // });
+        $.get(url).then((resp) => {
+             let publicPower = {};
+             publicPower = resp;
+             myPieChartData.series.data = [];
+             publicPower.production_types.forEach(type => {
+                myPieChartData.series.data.push({name : type.name, y: avg(type.data)})
+             })
+        });
         getPieChart();
     };
 
