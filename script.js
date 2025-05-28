@@ -350,5 +350,3 @@ let myPieChartData = {
         }
     }
 }
-
-const getPieChart = async () => { Highcharts.chart('container', myPieChartData) }
