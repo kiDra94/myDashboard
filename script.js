@@ -62,6 +62,7 @@ function setContent(id) {
         });
     }
     if (id = "map") { getEuropMap() };
+    if (id = "other") { getEuropMap() };
 
 }
 
@@ -120,6 +121,7 @@ function printRow(timeUnix, price, unit) {
 $(document).ready(() => { // document (dom) ready!
     $("#fetch-link").click(() => { setContent('fetch') });//registering
     $("#map-link").click(() => { setContent('map') });
+    $("#other-link").click(() => { setContent('other') });
     $("#redraw").click(() => {
         setContent("fetch");
     }
