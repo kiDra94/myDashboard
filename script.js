@@ -87,7 +87,7 @@ function setContent(id) {
         const start = $("#from-public-power").val();
         const end = $("#to-public-power").val();
 
-        let url = "http://localhost:3000//api/power?";
+        let url = "http://localhost:3000/api/power?";
         url += "country=" + country.toLowerCase();
         url += "&start=" + start;
         url += "&end=" + end;
