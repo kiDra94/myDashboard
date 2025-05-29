@@ -54,7 +54,7 @@ function setContent(id) {
         getPrice();
     }
     if (id === "map") {
-        getEuropMap()
+        drawEuropMap()
     };
     if (id === "other") {
         getPieChart();
@@ -192,7 +192,7 @@ const getPieChart = async () => {
 
 }
 
-const getEuropMap = async () => {
+const drawEuropMap = async () => {
     try {
         const topology = await fetch(
             'https://code.highcharts.com/mapdata/custom/europe.topo.json'
@@ -258,6 +258,10 @@ const getEuropMap = async () => {
             '<div class="alert alert-danger">Error loading map data. Please try again later.</div>';
     }
 };
+
+const getCbetData = async () => {
+
+}
 let myData = {
     chart: {
         type: 'area',
