@@ -155,6 +155,61 @@ app.get('/api/price', async (req, res) => {
   }
 });
 
+app.get('/api/cbet', async (req, res) => {
+  try {
+    // Get parameters from query string
+    const country = req.query.country || 'de'; // Default to Germany if not specified
+    const start = req.query.start || ''; // Optional start date
+    const end = req.query.end || ''; // Optional end date
+
+    // Basic validation
+    if (!isValidCountry(country)) {
+      return res.status(400).json({
+        error: 'Invalid country code',
+        message: 'Please provide a valid country code (e.g., de, fr, uk)'
+      });
+    }
+
+    // Build the URL with query parameters
+    let url = `https://api.energy-charts.info/cbet?country=${country.toLowerCase()}`;
+
+    // Add optional parameters if provided
+    if (start) url += `&start=${start}`;
+    if (end) url += `&end=${end}`;
+
+    console.log(`Fetching data from: ${url}`);
+
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'User-Agent': 'Express-Energy-Proxy/1.0'
+      },
+      timeout: 10000 // 10 second timeout
+    });
+
+    // Check if the response is successful
+    if (!response.ok) {
+      throw new Error(`API responded with status: ${response.status}`);
+    }
+
+    // Parse the JSON response
+    const data = await response.json();
+    console.log(`Successfully fetched data for country: ${country}`);
+
+    // Return the data to the client
+    res.json(data);
+
+  } catch (error) {
+    console.error('Error fetching power data:', error);
+    res.status(500).json({
+      error: 'Failed to fetch data',
+      message: error.message,
+      stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
+    });
+  }
+});
+
 // Status endpoint for quick health check
 app.get('/status', (req, res) => {
   res.json({
