@@ -3,14 +3,6 @@
     color: blue;
 }
 
-/* .content {
-            border: 1px solid #ccc;
-            padding: 15px;
-            margin: 10px 0;
-            border-radius: 5px;
-            background-color: #f9f9f9;
-        } */
-
 .form-control,
 .input-group-text {
     border-radius: 0;
@@ -26,4 +18,27 @@
 .nav-link.active {
     font-weight: bold;
     color: #0d6efd !important;
+}
+
+#container {
+    min-width: 320px;
+    max-width: 800px;
+    height: 500px;
+    margin: 1em auto;
+}
+
+.animated-line {
+    stroke-dasharray: 8;
+    stroke-dashoffset: 10;
+    animation: dash 5s linear infinite;
+}
+
+@keyframes dash {
+    from {
+        stroke-dashoffset: 100;
+    }
+
+    to {
+        stroke-dashoffset: 20;
+    }
 }
