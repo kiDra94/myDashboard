@@ -44,40 +44,8 @@ function setContent(id) {
     };
     $("#" + id + "-content").removeClass("d-none");
 
-
     if (id === "fetch") {
-        const country = $("#country").val();
-        const start = $("#from").val();
-        const end = $("#to").val();
-
-        let url = "http://localhost:3000/api/price?";
-        url += "bzn=" + country;
-        url += "&start=" + start;
-        url += "&end=" + end;
-
-        $.get(url).then((resp) => {
-            let prices = {};
-            prices = resp;
-            myData.series = [];
-
-            let chartline = {
-                name: "Day-ahead spot market price ",
-                data: [],
-                fillOpacity: 0.1
-            };
-
-            for (let i = 0; i < prices.unix_seconds.length; i++) {
-                let timestamp = prices.unix_seconds[i] * 1000; // Convert to milliseconds
-                let marketprice = prices.price[i];
-                chartline.data.push([timestamp, marketprice]);
-            }
-
-            myData.series.push(chartline);
-
-            // Render chart
-            Highcharts.chart("mychart", myData);
-            writeTable(country, start, end);
-        });
+        getPrice();
     }
     if (id === "map") { getEuropMap() };
     if (id === "other") {
@@ -119,6 +87,40 @@ function setContent(id) {
 
 }
 
+const getPrice = async() => {
+    const country = $("#country").val();
+    const start = $("#from").val();
+    const end = $("#to").val();
+
+    let url = "http://localhost:3000/api/price?";
+    url += "bzn=" + country;
+    url += "&start=" + start;
+    url += "&end=" + end;
+
+    $.get(url).then((resp) => {
+        let prices = {};
+        prices = resp;
+        myData.series = [];
+
+        let chartline = {
+            name: "Day-ahead spot market price ",
+            data: [],
+            fillOpacity: 0.1
+        };
+
+        for (let i = 0; i < prices.unix_seconds.length; i++) {
+            let timestamp = prices.unix_seconds[i] * 1000; // Convert to milliseconds
+            let marketprice = prices.price[i];
+            chartline.data.push([timestamp, marketprice]);
+        }
+
+        myData.series.push(chartline);
+
+        // Render chart
+        Highcharts.chart("mychart", myData);
+        writeTable(country, start, end);
+    });
+}
 function writeTable(country, start, end) {
     let url = "http://localhost:3000/api/price?";
     url += "bzn=" + country;
@@ -149,7 +151,6 @@ function writeTable(country, start, end) {
         });
     });
 }
-
 function printHeader() {
     let html = "<thead>";
     html += "<tr>";
