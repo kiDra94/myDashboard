@@ -49,45 +49,12 @@ function setContent(id) {
     }
     if (id === "map") { getEuropMap() };
     if (id === "other") {
-        const country = $("#country-public-power").val();
-        const start = $("#from-public-power").val();
-        const end = $("#to-public-power").val();
-
-        let url = "http://localhost:3000/api/power?";
-        url += "country=" + country.toLowerCase();
-        url += "&start=" + start;
-        url += "&end=" + end;
-        myPieChartData.series.length = 0;
-        $.get(url).then((resp) => {
-            const publicPower = resp;
-            let totalSum = 0;
-            publicPower.production_types.forEach(type => { totalSum += sum(type.data) });
-
-            myPieChartData.series = [{
-                name: 'Production Type',
-                colorByPoint: true,
-                innerSize: '60%',
-                data: publicPower.production_types.filter(type => {
-                    const value = sum(type.data);
-                    return value > 0 && (value / totalSum * 100) >= 0.5;
-                })
-                    .map(type => ({
-                        name: type.name,
-                        y: sum(type.data)
-                    }))
-            }];
-            myPieChartData.chart.custom = { 'sum': parseInt(totalSum) };
-            console.log(myPieChartData);
-            myPieChartData.title.text = `Production Mix - ${$("#country-public-power").val()}`;
-
-            Highcharts.chart('container', myPieChartData);
-        });
-
+        getPieChart();
     };
 
 }
 
-const getPrice = async() => {
+const getPrice = async () => {
     const country = $("#country").val();
     const start = $("#from").val();
     const end = $("#to").val();
@@ -277,7 +244,42 @@ const getEuropMap = async () => {
             '<div class="alert alert-danger">Error loading map data. Please try again later.</div>';
     }
 };
+const getPieChart = async () => {
+    const country = $("#country-public-power").val();
+    const start = $("#from-public-power").val();
+    const end = $("#to-public-power").val();
 
+    let url = "http://localhost:3000/api/power?";
+    url += "country=" + country.toLowerCase();
+    url += "&start=" + start;
+    url += "&end=" + end;
+    myPieChartData.series.length = 0;
+    $.get(url).then((resp) => {
+        const publicPower = resp;
+        let totalSum = 0;
+        publicPower.production_types.forEach(type => { totalSum += sum(type.data) });
+
+        myPieChartData.series = [{
+            name: 'Production Type',
+            colorByPoint: true,
+            innerSize: '60%',
+            data: publicPower.production_types.filter(type => {
+                const value = sum(type.data);
+                return value > 0 && (value / totalSum * 100) >= 0.5;
+            })
+                .map(type => ({
+                    name: type.name,
+                    y: sum(type.data)
+                }))
+        }];
+        myPieChartData.chart.custom = { 'sum': parseInt(totalSum) };
+        console.log(myPieChartData);
+        myPieChartData.title.text = `Production Mix - ${$("#country-public-power").val()}`;
+
+        Highcharts.chart('container', myPieChartData);
+    });
+
+}
 let myPieChartData = {
     chart: {
         type: 'pie',
