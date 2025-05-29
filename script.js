@@ -34,7 +34,13 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 const sum = arr => arr.reduce((a, b) => a + b, 0);
-
+const validCbetCountry = [
+    'dk', 'fo', 'hr', 'nl', 'ee', 'bg', 'es', 'it', 'sm', 'va', 'tr', 'mt',
+    'fr', 'no', 'de', 'ie', 'ua', 'fi', 'se', 'ru', 'gb', 'cy', 'pt', 'gr',
+    'lt', 'si', 'ba', 'mc', 'al', 'cnm', 'nc', 'rs', 'ro', 'me', 'li', 'at',
+    'sk', 'hu', 'ad', 'lu', 'ch', 'be', 'kv', 'pl', 'mk', 'lv', 'by', 'is',
+    'md', 'cz'
+];
 function setContent(id) {
     let contents = document.querySelectorAll(".content");
 
@@ -47,7 +53,9 @@ function setContent(id) {
     if (id === "fetch") {
         getPrice();
     }
-    if (id === "map") { getEuropMap() };
+    if (id === "map") {
+        getEuropMap()
+    };
     if (id === "other") {
         getPieChart();
     };
