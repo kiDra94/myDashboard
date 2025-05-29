@@ -34,12 +34,9 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 const sum = arr => arr.reduce((a, b) => a + b, 0);
-const avg = arr => sum(arr) / arr.length;
-
 
 function setContent(id) {
     let contents = document.querySelectorAll(".content");
-    let links = document.querySelectorAll(".nav-link");
 
     for (let i = 0; i < contents.length; i++) {
         let ele = contents[i];
@@ -48,7 +45,7 @@ function setContent(id) {
     $("#" + id + "-content").removeClass("d-none");
 
 
-    if (id == "fetch") {
+    if (id === "fetch") {
         const country = $("#country").val();
         const start = $("#from").val();
         const end = $("#to").val();
@@ -82,8 +79,8 @@ function setContent(id) {
             writeTable(country, start, end);
         });
     }
-    if (id = "map") { getEuropMap() };
-    if (id = "other") {
+    if (id === "map") { getEuropMap() };
+    if (id === "other") {
         const country = $("#country-public-power").val();
         const start = $("#from-public-power").val();
         const end = $("#to-public-power").val();
@@ -92,27 +89,29 @@ function setContent(id) {
         url += "country=" + country.toLowerCase();
         url += "&start=" + start;
         url += "&end=" + end;
-
+        myPieChartData.series.length = 0;
         $.get(url).then((resp) => {
             const publicPower = resp;
+            let totalSum = 0;
+            publicPower.production_types.forEach(type => { totalSum += sum(type.data) });
 
-            const newSeries = [{
+            myPieChartData.series = [{
                 name: 'Production Type',
                 colorByPoint: true,
                 innerSize: '60%',
-                data: publicPower.production_types.filter(type => avg(type.data) > 0).map(type => ({
-                    name: type.name,
-                    y: avg(type.data)
-                }))
+                data: publicPower.production_types.filter(type => {
+                    const value = sum(type.data);
+                    return value > 0 && (value / totalSum * 100) >= 0.5;
+                })
+                    .map(type => ({
+                        name: type.name,
+                        y: sum(type.data)
+                    }))
             }];
-            //console.log(publicPower.production_type)
-            let totalSum = 0;
-            publicPower.production_types.forEach(type => { totalSum += sum(type.data)});
-            myPieChartData.chart.custom = {'sum': parseInt(totalSum)};
-            myPieChartData.series = newSeries;
-
+            myPieChartData.chart.custom = { 'sum': parseInt(totalSum) };
+            console.log(myPieChartData);
             myPieChartData.title.text = `Production Mix - ${$("#country-public-power").val()}`;
-            
+
             Highcharts.chart('container', myPieChartData);
         });
 
@@ -352,5 +351,6 @@ let myPieChartData = {
             }],
             showInLegend: true
         }
-    }
+    },
+    series: []
 }
