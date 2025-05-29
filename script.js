@@ -32,7 +32,7 @@ window.addEventListener('DOMContentLoaded', () => {
     pieChartsSelect.value = 'AT';
 
 });
-
+// TODO: implement logic for euroMap in the const EuroMap
 const sum = arr => arr.reduce((a, b) => a + b, 0);
 const validCbetCountry = [
     'dk', 'fo', 'hr', 'nl', 'ee', 'bg', 'es', 'it', 'sm', 'va', 'tr', 'mt',
