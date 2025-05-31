@@ -43,7 +43,7 @@
             <h4>Energy Price Data</h4>
             <div class="card mb-4">
                 <div class="card-body">
-                    <div class="btn-toolbar mb-3" role="toolbar" aria-label="Toolbar with date inputs">
+                    <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with date inputs">
                         <div class="btn-group me-2" role="group" aria-label="Country selector">
                             <label class="input-group-text rounded-0" for="country">Country</label>
                             <select class="form-select" id="country">
@@ -57,7 +57,7 @@
                             <span class="input-group-text rounded-0">To</span>
                             <input type="date" class="form-control rounded-0" id="to" value="2024-02-01">
                         </div>
-                        <button type="button" class="btn btn-primary" id="redraw">Fetch Data</button>
+                        <button type="button" class="btn btn-primary ms-auto" id="redraw">Fetch Data</button>
                     </div>
                 </div>
             </div>
@@ -88,21 +88,25 @@
         <!-- Section 2: Map View -->
         <div id="map-content" class="content d-none">
             <h4>European Energy Map</h4>
-            <div class="btn-toolbar mb-3" role="toolbar" aria-label="Toolbar with date inputs">
-                <div class="btn-group me-2" role="group" aria-label="Country selector">
-                    <label class="input-group-text rounded-0" for="country">Country</label>
-                    <select class="form-select" id="country-euro-map">
-                    </select>
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with date inputs">
+                        <div class="btn-group me-2" role="group" aria-label="Country selector">
+                            <label class="input-group-text rounded-0" for="country">Country</label>
+                            <select class="form-select" id="country-euro-map">
+                            </select>
+                        </div>
+                        <div class="btn-group me-2" role="group" aria-label="First group">
+                            <span class="input-group-text rounded-0">From</span>
+                            <input type="date" class="form-control rounded-0" id="from-euro-map" value="2024-01-01">
+                        </div>
+                        <div class="btn-group me-2" role="group" aria-label="Second group">
+                            <span class="input-group-text rounded-0">To</span>
+                            <input type="date" class="form-control rounded-0" id="to-euro-map" value="2024-02-01">
+                        </div>
+                        <button type="button" class="btn btn-primary  ms-auto" id="redraw-euro-map">Fetch Data</button>
+                    </div>
                 </div>
-                <div class="btn-group me-2" role="group" aria-label="First group">
-                    <span class="input-group-text rounded-0">From</span>
-                    <input type="date" class="form-control rounded-0" id="from-euro-map" value="2024-01-01">
-                </div>
-                <div class="btn-group me-2" role="group" aria-label="Second group">
-                    <span class="input-group-text rounded-0">To</span>
-                    <input type="date" class="form-control rounded-0" id="to-euro-map" value="2024-02-01">
-                </div>
-                <button type="button" class="btn btn-primary" id="redraw-euro-map">Fetch Data</button>
             </div>
             <div class="card">
                 <div class="card-body">
@@ -111,30 +115,40 @@
             </div>
         </div>
 
+
         <!-- Section 3: Other -->
         <div id="other-content" class="content d-none">
-            <div class="btn-toolbar mb-3" role="toolbar" aria-label="Toolbar with date inputs">
-                <div class="btn-group me-2" role="group" aria-label="Country selector">
-                    <label class="input-group-text rounded-0" for="country">Country</label>
-                    <select class="form-select" id="country-public-power">
-                    </select>
+            <h4>European Energy Map</h4>
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="btn-toolbar mb-3" role="toolbar" aria-label="Toolbar with date inputs">
+                        <div class="btn-group me-2" role="group" aria-label="Country selector">
+                            <label class="input-group-text rounded-0" for="country">Country</label>
+                            <select class="form-select" id="country-public-power">
+                            </select>
+                        </div>
+                        <div class="btn-group me-2" role="group" aria-label="First group">
+                            <span class="input-group-text rounded-0">From</span>
+                            <input type="date" class="form-control rounded-0" id="from-public-power" value="2024-01-01">
+                        </div>
+                        <div class="btn-group me-2" role="group" aria-label="Second group">
+                            <span class="input-group-text rounded-0">To</span>
+                            <input type="date" class="form-control rounded-0" id="to-public-power" value="2024-02-01">
+                        </div>
+                        <button type="button" class="btn btn-primary ms-auto" id="redraw-other">Fetch Data</button>
+                    </div>
                 </div>
-                <div class="btn-group me-2" role="group" aria-label="First group">
-                    <span class="input-group-text rounded-0">From</span>
-                    <input type="date" class="form-control rounded-0" id="from-public-power" value="2024-01-01">
-                </div>
-                <div class="btn-group me-2" role="group" aria-label="Second group">
-                    <span class="input-group-text rounded-0">To</span>
-                    <input type="date" class="form-control rounded-0" id="to-public-power" value="2024-02-01">
-                </div>
-                <button type="button" class="btn btn-primary" id="redraw-other">Fetch Data</button>
             </div>
-            <figure class="highcharts-figure">
-                <div id="container" class="mx-auto my-3"></div>
-                <p class="highcharts-description text-center mt-3">
-                    The public net electricity production for a given country for each production type.
-                </p>
-            </figure>
+            <div class="card">
+                <div class="card-body">
+                    <figure class="highcharts-figure">
+                        <div id="container" class="mx-auto my-3"></div>
+                        <p class="highcharts-description text-center mt-3">
+                            The public net electricity production for a given country for each production type.
+                        </p>
+                    </figure>
+                </div>
+            </div>
         </div>
     </div>
 
