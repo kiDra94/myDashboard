@@ -11,16 +11,16 @@ window.addEventListener('DOMContentLoaded', () => {
         option.textContent = bzn;
         bznSelect.appendChild(option);
     });
-    bznSelect.value = 'AT'; // Set default
+    bznSelect.value = "AT"; // Set default
 
     const mapSelect = document.getElementById('country-euro-map');
     Object.values(validCbetCountries).forEach(country => {
         const option = document.createElement('option');
-        option.value = country;
+        option.value = country.toUpperCase();
         option.textContent = country.toUpperCase();
         mapSelect.appendChild(option);
     });
-    mapSelect.value = 'AT'; // Set default
+    mapSelect.value = "AT"; // Set default
 
 
     const pieChartsSelect = document.getElementById('country-public-power');
@@ -35,7 +35,7 @@ window.addEventListener('DOMContentLoaded', () => {
         option.textContent = country.toUpperCase();
         pieChartsSelect.appendChild(option);
     });
-    pieChartsSelect.value = 'AT';
+    pieChartsSelect.value = "AT";
 });
 // TODO: implement logic for euroMap in the const EuroMap
 const sum = arr => arr.reduce((a, b) => a + b, 0);
@@ -208,15 +208,13 @@ const drawEuropMap = async () => {
             'https://code.highcharts.com/mapdata/custom/europe.topo.json'
         ).then(response => response.json());
 
-
         const data = [
-            ['dk', 0], ['fo', 0], ['hr', 0], ['nl', 0], ['ee', 0], ['bg', 0], ['es', 0], ['it', 0], ['sm', 0], ['va', 0],
-            ['tr', 0], ['mt', 0], ['fr', 0], ['no', 0], ['de', 0], ['ie', 0], ['ua', 0], ['fi', 0], ['se', 0], ['ru', 0],
-            ['gb', 0], ['cy', 0], ['pt', 0], ['gr', 0], ['lt', 0], ['si', 0], ['ba', 0], ['mc', 0], ['al', 0], ['rs', 0],
-            ['ro', 0], ['me', 0], ['li', 0], ['at', 0], ['sk', 0], ['hu', 0], ['ad', 0], ['lu', 0], ['ch', 0], ['be', 0],
-            ['kv', 0], ['pl', 0], ['mk', 0], ['lv', 0], ['by', 0], ['is', 0], ['md', 0], ['cz', 0]
+            ["dk", "0"], ["fo", "0"], ["hr", "0"], ["nl", "0"], ["ee", "0"], ["bg", "0"], ["es", "0"], ["it", "0"], ["sm", "0"], ["va", "0"],
+            ["tr", "0"], ["mt", "0"], ["fr", "0"], ["no", "0"], ["de", "0"], ["ie", "0"], ["ua", "0"], ["fi", "0"], ["se", "0"], ["ru", "0"],
+            ["gb", "0"], ["cy", "0"], ["pt", "0"], ["gr", "0"], ["lt", "0"], ["si", "0"], ["ba", "0"], ["mc", "0"], ["al", "0"], ["rs", "0"],
+            ["ro", "0"], ["me", "0"], ["li", "0"], ["at", "0"], ["sk", "0"], ["hu", "0"], ["ad", "0"], ["lu", "0"], ["ch", "0"], ["be", "0"],
+            ["kv", "0"], ["pl", "0"], ["mk", "0"], ["lv", "0"], ["by", "0"], ["is", "0"], ["md", "0"], ["cz", "0"]
         ];
-
 
         // Create the map chart
         Highcharts.mapChart('container-map', {
