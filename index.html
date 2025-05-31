@@ -26,7 +26,7 @@
                         <a id="price-link" class="nav-link" href="#">Energy Price</a>
                     </li>
                     <li class="nav-item">
-                        <a id="map-link" class="nav-link" href="#">Show Map</a>
+                        <a id="euro-map-link" class="nav-link" href="#">Show Map</a>
                     </li>
                     <li class="nav-item">
                         <a id="production-by-type-link" class="nav-link" href="#">Production by Type</a>
@@ -86,7 +86,7 @@
         </div>
 
         <!-- Section 2: Map View -->
-        <div id="map-content" class="content d-none">
+        <div id="euro-map-content" class="content d-none">
             <h4>European Energy Map</h4>
             <div class="card mb-4">
                 <div class="card-body">
@@ -124,16 +124,16 @@
                     <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with date inputs">
                         <div class="btn-group me-2" role="group" aria-label="Country selector">
                             <label class="input-group-text rounded-0" for="country">Country</label>
-                            <select class="form-select" id="country-public-power">
+                            <select class="form-select" id="country-production-by-type" value="at">
                             </select>
                         </div>
                         <div class="btn-group me-2" role="group" aria-label="First group">
                             <span class="input-group-text rounded-0">From</span>
-                            <input type="date" class="form-control rounded-0" id="from-public-power" value="2024-01-01">
+                            <input type="date" class="form-control rounded-0" id="from-production-by-type" value="2024-01-01">
                         </div>
                         <div class="btn-group me-2" role="group" aria-label="Second group">
                             <span class="input-group-text rounded-0">To</span>
-                            <input type="date" class="form-control rounded-0" id="to-public-power" value="2024-02-01">
+                            <input type="date" class="form-control rounded-0" id="to-production-by-type" value="2024-02-01">
                         </div>
                         <button type="button" class="btn btn-primary ms-auto" id="redraw-production-by-type">Fetch Data</button>
                     </div>
