@@ -129,7 +129,7 @@ function writeTable(country, start, end) {
 function printHeader() {
     let html = "<thead>";
     html += "<tr>";
-    html += "<th scope='col'>Time</th>";
+    html += "<th scope='col'>Date and Time</th>";
     html += "<th scope='col'>Value</th>";
     html += "<th scope='col'>Unit</th>";
     html += "</tr>";
@@ -138,7 +138,7 @@ function printHeader() {
 }
 function printRow(timeUnix, price, unit) {
     let date = new Date(timeUnix * 1000);
-    let timeStr = date.toLocaleTimeString();
+    let timeStr = date.toLocaleString();
 
     let html = "<tr>";
     html += "<td>" + timeStr + "</td>";
