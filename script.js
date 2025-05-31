@@ -48,7 +48,7 @@ const validCbetCountries = {
     "Serbia": "rs", "Romania": "ro", "Montenegro": "me", "Liechtenstein": "li", "Austria": "at",
     "Slovakia": "sk", "Hungary": "hu", "Andorra": "ad", "Luxembourg": "lu", "Switzerland": "ch", "Belgium": "be",
     "Kosovo": "kv", "Poland": "pl", "Macedonia": "mk", "Latvia": "lv", "Belarus": "by", "Iceland": "is",
-    "Moldova": "md", "Czechia": "cz"
+    "Moldova": "md", "Czech Republic": "cz"
 };
 
 function setContent(id) {
@@ -236,23 +236,17 @@ const getCbetData = async () => {
             const cntrySum = sum(obj.data)
             totalSum += Math.abs(cntrySum);
             if (obj.name === "sum") {
-                countriesTotalSum.push( [[country.toLowerCase()], cntrySum] );
+                countriesTotalSum.push( [country.toLowerCase(), cntrySum] );
             } else {
-                countriesTotalSum.push([ [validCbetCountries[obj.name]], cntrySum ]);
+                countriesTotalSum.push([ validCbetCountries[obj.name], cntrySum ]);
             }
         })
         let finalData = {};
-        let finalCntryData = [];
-        console.log(finalCntryData);
-        finalCntryData = countriesTotalSum.map(obj => {
-            const key = Object.keys(obj)[0];
-            const value = obj[key];
-            if (totalSum === 0) {
-                return { [key]: 0 }
-            }
-            return [ key, (value / totalSum) ]
+        console.log(countriesTotalSum);
+        countriesTotalSum.forEach(obj => {
+            obj[1] /= totalSum;
         })
-        console.log(finalCntryData);
+        console.log(countriesTotalSum);
         finalData = {
             chart: {
                 map: topology,
@@ -280,7 +274,7 @@ const getCbetData = async () => {
                 ]
             },
             series: [{
-                data: finalCntryData,
+                data: countriesTotalSum,
                 name: 'Energy Price Index',
                 states: {
                     hover: {
