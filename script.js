@@ -152,6 +152,7 @@ $(document).ready(() => { // document (dom) ready!
     $("#map-link").click(() => { setContent('map') });
     $("#other-link").click(() => { setContent('other') });
     $("#redraw").click(() => { setContent('fetch'); });
+    $("#redraw-euro-map").click(() => { setContent('map'); })
     $("#redraw-other").click(() => { setContent('other'); })
 });
 
@@ -197,7 +198,7 @@ const drawEuropMap = async () => {
             'https://code.highcharts.com/mapdata/custom/europe.topo.json'
         ).then(response => response.json());
 
-        
+
         const data = [
             ['dk', -1], ['fo', 0], ['hr', 0], ['nl', 0], ['ee', 0], ['bg', 0],
             ['es', -0.5], ['it', 0.5], ['sm', 0], ['va', 0], ['tr', 0], ['mt', 0],
