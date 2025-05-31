@@ -236,9 +236,9 @@ const getCbetData = async () => {
             const cntrySum = sum(obj.data)
             totalSum += Math.abs(cntrySum);
             if (obj.name === "sum") {
-                countriesTotalSum.push( [country.toLowerCase(), cntrySum] );
+                countriesTotalSum.push([country.toLowerCase(), cntrySum]);
             } else {
-                countriesTotalSum.push([ validCbetCountries[obj.name], cntrySum ]);
+                countriesTotalSum.push([validCbetCountries[obj.name], cntrySum]);
             }
         })
         let finalData = {};
@@ -256,7 +256,7 @@ const getCbetData = async () => {
                 text: 'European Energy Map'
             },
             subtitle: {
-                text: 'Source map: <a href="https://code.highcharts.com/mapdata/custom/europe.topo.json">Europe</a>'
+                text: 'Positive values indicate an import of electricity, whereas negative values show electricity exports.\nSource map: <a href="https://code.highcharts.com/mapdata/custom/europe.topo.json">Europe</a>'
             },
             mapNavigation: {
                 enabled: true,
@@ -268,9 +268,9 @@ const getCbetData = async () => {
                 min: -1,
                 max: 1,
                 stops: [
-                    [0, '#ff6666'],
+                    [0, '#66ff66'],
                     [0.5, '#cccccc'],
-                    [1, '#66ff66']
+                    [1, '#ff6666']
                 ]
             },
             series: [{
@@ -284,7 +284,10 @@ const getCbetData = async () => {
                 dataLabels: {
                     enabled: true,
                     format: '{point.name}'
-                }
+                },
+                tooltip: {
+                    pointFormat: '{point.name}: <b>{point.value:.2f}%</b>'
+                },
             }]
         }
         return finalData;
