@@ -31,15 +31,15 @@ window.addEventListener('DOMContentLoaded', () => {
 // TODO: implement logic for euroMap in the const EuroMap
 const sum = arr => arr.reduce((a, b) => a + b, 0);
 const validCbetCountries = {
-  "Denmark": "dk", "Faroe Islands": "fo", "Croatia": "hr", "Netherlands": "nl", "Estonia": "ee", "Bulgaria": "bg",
-  "Spain": "es", "Italy": "it", "San Marino": "sm", "Vatican": "va", "Turkey": "tr", "Malta": "mt",
-  "France": "fr", "Norway": "no", "Germany": "de", "Ireland": "ie", "Ukraine": "ua", "Finland": "fi",
-  "Sweden": "se", "Russia": "ru", "United Kingdom": "gb", "Cyprus": "cy", "Portugal": "pt", "Greece": "gr",
-  "Lithuania": "lt", "Slovenia": "si", "Bosnia": "ba", "Monaco": "mc", "Albania": "al",
-  "Serbia": "rs", "Romania": "ro", "Montenegro": "me", "Liechtenstein": "li", "Austria": "at",
-  "Slovakia": "sk", "Hungary": "hu", "Andorra": "ad", "Luxembourg": "lu", "Switzerland": "ch", "Belgium": "be",
-  "Kosovo": "kv", "Poland": "pl", "Macedonia": "mk", "Latvia": "lv", "Belarus": "by", "Iceland": "is",
-  "Moldova": "md", "Czechia": "cz"
+    "Denmark": "dk", "Faroe Islands": "fo", "Croatia": "hr", "Netherlands": "nl", "Estonia": "ee", "Bulgaria": "bg",
+    "Spain": "es", "Italy": "it", "San Marino": "sm", "Vatican": "va", "Turkey": "tr", "Malta": "mt",
+    "France": "fr", "Norway": "no", "Germany": "de", "Ireland": "ie", "Ukraine": "ua", "Finland": "fi",
+    "Sweden": "se", "Russia": "ru", "United Kingdom": "gb", "Cyprus": "cy", "Portugal": "pt", "Greece": "gr",
+    "Lithuania": "lt", "Slovenia": "si", "Bosnia": "ba", "Monaco": "mc", "Albania": "al",
+    "Serbia": "rs", "Romania": "ro", "Montenegro": "me", "Liechtenstein": "li", "Austria": "at",
+    "Slovakia": "sk", "Hungary": "hu", "Andorra": "ad", "Luxembourg": "lu", "Switzerland": "ch", "Belgium": "be",
+    "Kosovo": "kv", "Poland": "pl", "Macedonia": "mk", "Latvia": "lv", "Belarus": "by", "Iceland": "is",
+    "Moldova": "md", "Czechia": "cz"
 };
 
 function setContent(id) {
