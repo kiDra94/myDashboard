@@ -52,14 +52,7 @@ const validCbetCountries = {
 };
 
 function setContent(id) {
-    let contents = document.querySelectorAll(".content");
-
-    for (let i = 0; i < contents.length; i++) {
-        let ele = contents[i];
-        ele.classList.add("d-none");
-    };
-    $("#" + id + "-content").removeClass("d-none");
-
+    removeDNone(id);
     if (id === "fetch") {
         getPrice();
     }
@@ -70,6 +63,15 @@ function setContent(id) {
         getPieChart();
     };
 
+}
+
+const removeDNone = (id) => {
+    let contents = document.querySelectorAll(".content");
+    for (let i = 0; i < contents.length; i++) {
+        let ele = contents[i];
+        ele.classList.add("d-none");
+    };
+    $("#" + id + "-content").removeClass("d-none");
 }
 
 const getPrice = async () => {
@@ -103,37 +105,28 @@ const getPrice = async () => {
 
         // Render chart
         Highcharts.chart("mychart", myData);
-        writeTable(country, start, end);
+        writeTable(resp);
     });
 }
-function writeTable(country, start, end) {
-    let url = "http://localhost:3000/api/price?";
-    url += "bzn=" + country;
-    url += "&start=" + start;
-    url += "&end=" + end;
-
-    // Destroy old table if DataTable was initialized
-    if ($.fn.DataTable.isDataTable("#mytable")) {
-        $('#mytable').DataTable().destroy();
+function writeTable(resp) {
+    // Destroy existing DataTable if it exists
+    if ($.fn.DataTable.isDataTable('#mytable')) {
+        $('#mytable').DataTable().clear().destroy();
     }
-
     $("#mytable").empty(); // Clears full table
+    let html = printHeader();
+    html += "<tbody>";
+    for (let i = 0; i < resp.price.length; i++) {
+        html += printRow(resp.unix_seconds[i], resp.price[i], resp.unit);
+    }
+    html += "</tbody>";
+    $("#mytable").html(html);
 
-    $.get(url).then((resp) => {
-        let html = printHeader();
-        html += "<tbody>";
-        for (let i = 0; i < resp.price.length; i++) {
-            html += printRow(resp.unix_seconds[i], resp.price[i], resp.unit);
-        }
-        html += "</tbody>";
-        $("#mytable").html(html);
-
-        // Initialize DataTable after table is populated
-        $('#mytable').DataTable({
-            pageLength: 15,
-            lengthChange: false,
-            dom: '<"top"f>rt<"bottom"lip><"clear">'
-        });
+    // Initialize DataTable after table is populated
+    $('#mytable').DataTable({
+        pageLength: 15,
+        lengthChange: false,
+        dom: '<"top"f>rt<"bottom"lip><"clear">'
     });
 }
 function printHeader() {
