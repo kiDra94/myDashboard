@@ -5,15 +5,14 @@ window.addEventListener('DOMContentLoaded', () => {
         "DK1", "DK2", "FR", "HU", "IT-North", "NL",
         "NO2", "PL", "SE4", "SI"
     ];
-
     bzn.forEach(bzn => {
         const option = document.createElement('option');
         option.value = bzn;
         option.textContent = bzn;
         bznSelect.appendChild(option);
     });
-
     bznSelect.value = 'AT'; // Set default
+
 
     const pieChartsSelect = document.getElementById('country-public-power');
     const apiCountry = [
@@ -21,26 +20,28 @@ window.addEventListener('DOMContentLoaded', () => {
         "gb", "ge", "gr", "hr", "hu", "ie", "it", "lt", "lu", "lv", "md", "me", "mk", "nl", "no",
         "pl", "pt", "ro", "rs", "ru", "se", "si", "sk", "tr", "ua", "xk", "eu27", "all"
     ];
-
     apiCountry.forEach(country => {
         const option = document.createElement('option');
         option.value = country.toUpperCase();
         option.textContent = country.toUpperCase();
         pieChartsSelect.appendChild(option);
     });
-
     pieChartsSelect.value = 'AT';
-
 });
 // TODO: implement logic for euroMap in the const EuroMap
 const sum = arr => arr.reduce((a, b) => a + b, 0);
-const validCbetCountry = [
-    'dk', 'fo', 'hr', 'nl', 'ee', 'bg', 'es', 'it', 'sm', 'va', 'tr', 'mt',
-    'fr', 'no', 'de', 'ie', 'ua', 'fi', 'se', 'ru', 'gb', 'cy', 'pt', 'gr',
-    'lt', 'si', 'ba', 'mc', 'al', 'cnm', 'nc', 'rs', 'ro', 'me', 'li', 'at',
-    'sk', 'hu', 'ad', 'lu', 'ch', 'be', 'kv', 'pl', 'mk', 'lv', 'by', 'is',
-    'md', 'cz'
-];
+const validCbetCountries = {
+  "Denmark": "dk", "Faroe Islands": "fo", "Croatia": "hr", "Netherlands": "nl", "Estonia": "ee", "Bulgaria": "bg",
+  "Spain": "es", "Italy": "it", "San Marino": "sm", "Vatican": "va", "Turkey": "tr", "Malta": "mt",
+  "France": "fr", "Norway": "no", "Germany": "de", "Ireland": "ie", "Ukraine": "ua", "Finland": "fi",
+  "Sweden": "se", "Russia": "ru", "United Kingdom": "gb", "Cyprus": "cy", "Portugal": "pt", "Greece": "gr",
+  "Lithuania": "lt", "Slovenia": "si", "Bosnia": "ba", "Monaco": "mc", "Albania": "al",
+  "Serbia": "rs", "Romania": "ro", "Montenegro": "me", "Liechtenstein": "li", "Austria": "at",
+  "Slovakia": "sk", "Hungary": "hu", "Andorra": "ad", "Luxembourg": "lu", "Switzerland": "ch", "Belgium": "be",
+  "Kosovo": "kv", "Poland": "pl", "Macedonia": "mk", "Latvia": "lv", "Belarus": "by", "Iceland": "is",
+  "Moldova": "md", "Czechia": "cz"
+};
+
 function setContent(id) {
     let contents = document.querySelectorAll(".content");
 
@@ -200,16 +201,13 @@ const drawEuropMap = async () => {
 
 
         const data = [
-            ['dk', -1], ['fo', 0], ['hr', 0], ['nl', 0], ['ee', 0], ['bg', 0],
-            ['es', -0.5], ['it', 0.5], ['sm', 0], ['va', 0], ['tr', 0], ['mt', 0],
-            ['fr', 0], ['no', 0], ['de', 0], ['ie', 0], ['ua', 0], ['fi', 0],
-            ['se', 0], ['ru', 1], ['gb', 0], ['cy', 0], ['pt', 0], ['gr', 0],
-            ['lt', 0], ['si', 0], ['ba', 0], ['mc', 0], ['al', 0], ['cnm', 0],
-            ['nc', 0], ['rs', 0], ['ro', 0], ['me', 0], ['li', 0], ['at', 0],
-            ['sk', 0], ['hu', 0], ['ad', 0], ['lu', 0], ['ch', 0], ['be', 0],
-            ['kv', 0], ['pl', 0], ['mk', 0], ['lv', 0], ['by', 0], ['is', 0],
-            ['md', 0], ['cz', 0]
+            ['dk', 0], ['fo', 0], ['hr', 0], ['nl', 0], ['ee', 0], ['bg', 0], ['es', 0], ['it', 0], ['sm', 0], ['va', 0],
+            ['tr', 0], ['mt', 0], ['fr', 0], ['no', 0], ['de', 0], ['ie', 0], ['ua', 0], ['fi', 0], ['se', 0], ['ru', 0],
+            ['gb', 0], ['cy', 0], ['pt', 0], ['gr', 0], ['lt', 0], ['si', 0], ['ba', 0], ['mc', 0], ['al', 0], ['rs', 0],
+            ['ro', 0], ['me', 0], ['li', 0], ['at', 0], ['sk', 0], ['hu', 0], ['ad', 0], ['lu', 0], ['ch', 0], ['be', 0],
+            ['kv', 0], ['pl', 0], ['mk', 0], ['lv', 0], ['by', 0], ['is', 0], ['md', 0], ['cz', 0]
         ];
+
 
         // Create the map chart
         Highcharts.mapChart('container-map', {
@@ -260,9 +258,9 @@ const drawEuropMap = async () => {
 };
 
 const getCbetData = async () => {
-    const country = $("#country-public-power").val();
-    const start = $("#from-public-power").val();
-    const end = $("#to-public-power").val();
+    const country = $("#country-euro-map").val();
+    const start = $("#from-euro-map").val();
+    const end = $("#to-euro-map").val();
 
     let url = "http://localhost:3000/api/cbet?";
     url += "country=" + country.toLowerCase();
