@@ -1,5 +1,5 @@
 window.addEventListener('DOMContentLoaded', () => {
-    const bznSelect = document.getElementById('country');
+    const bznSelect = document.getElementById('country-price');
     const bzn = [
         "AT", "BE", "CH", "CZ", "DE-LU", "DE-AT-LU",
         "DK1", "DK2", "FR", "HU", "IT-North", "NL",
@@ -53,8 +53,8 @@ const validCbetCountries = {
 
 function setContent(id) {
     removeDNone(id);
-    if (id === "fetch") {
-        getPrice();
+    if (id === "price") {
+        getPrice(id);
     }
     if (id === "map") {
         drawEuropMap();
@@ -74,16 +74,24 @@ const removeDNone = (id) => {
     $("#" + id + "-content").removeClass("d-none");
 }
 
-const getPrice = async () => {
-    const country = $("#country").val();
-    const start = $("#from").val();
-    const end = $("#to").val();
-
-    let url = "http://localhost:3000/api/price?";
-    url += "bzn=" + country;
+const buildUrl = (url, id) => {
+    const country = $(`#country-${id}`).val();
+    const start = $(`#from-${id}`).val();
+    const end = $(`#to-${id}`).val();
+    if (id === "price") {
+        url += "bzn=" + country;
+    }
+    else {
+        url += "country=" + country;
+    }
     url += "&start=" + start;
     url += "&end=" + end;
+    return url
+}
 
+const getPrice = async (id) => {
+    let apiEndpoint = "http://localhost:3000/api/price?";
+    const url = buildUrl(apiEndpoint, id);
     $.get(url).then((resp) => {
         let prices = {};
         prices = resp;
@@ -151,10 +159,10 @@ function printRow(timeUnix, price, unit) {
     return html;
 }
 $(document).ready(() => { // document (dom) ready!
-    $("#fetch-link").click(() => { setContent('fetch') });//registering
+    $("#price-link").click(() => { setContent('price') });
     $("#map-link").click(() => { setContent('map') });
     $("#production-by-type-link").click(() => { setContent('production-by-type') });
-    $("#redraw").click(() => { setContent('fetch'); });
+    $("#redraw-price").click(() => { setContent('price'); });
     $("#redraw-euro-map").click(() => { setContent('map'); })
     $("#redraw-production-by-type").click(() => { setContent('production-by-type'); })
 });
