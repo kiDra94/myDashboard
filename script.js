@@ -66,7 +66,7 @@ function setContent(id) {
     if (id === "map") {
         drawEuropMap();
     };
-    if (id === "other") {
+    if (id === "production-by-type") {
         getPieChart();
     };
 
@@ -160,10 +160,10 @@ function printRow(timeUnix, price, unit) {
 $(document).ready(() => { // document (dom) ready!
     $("#fetch-link").click(() => { setContent('fetch') });//registering
     $("#map-link").click(() => { setContent('map') });
-    $("#other-link").click(() => { setContent('other') });
+    $("#production-by-type-link").click(() => { setContent('production-by-type') });
     $("#redraw").click(() => { setContent('fetch'); });
     $("#redraw-euro-map").click(() => { setContent('map'); })
-    $("#redraw-other").click(() => { setContent('other'); })
+    $("#redraw-production-by-type").click(() => { setContent('production-by-type'); })
 });
 
 const getPieChart = async () => {
