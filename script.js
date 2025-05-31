@@ -20,7 +20,7 @@ window.addEventListener('DOMContentLoaded', () => {
         option.textContent = country.toUpperCase();
         mapSelect.appendChild(option);
     });
-    bznSelect.value = 'AT'; // Set default
+    mapSelect.value = 'AT'; // Set default
 
 
     const pieChartsSelect = document.getElementById('country-public-power');
