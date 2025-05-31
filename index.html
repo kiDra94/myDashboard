@@ -23,7 +23,7 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a id="fetch-link" class="nav-link" href="#">Energy Price</a>
+                        <a id="price-link" class="nav-link" href="#">Energy Price</a>
                     </li>
                     <li class="nav-item">
                         <a id="map-link" class="nav-link" href="#">Show Map</a>
@@ -46,18 +46,18 @@
                     <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with date inputs">
                         <div class="btn-group me-2" role="group" aria-label="Country selector">
                             <label class="input-group-text rounded-0" for="country">Country</label>
-                            <select class="form-select" id="country">
+                            <select class="form-select" id="country-price">
                             </select>
                         </div>
                         <div class="btn-group me-2" role="group" aria-label="First group">
                             <span class="input-group-text rounded-0">From</span>
-                            <input type="date" class="form-control rounded-0" id="from" value="2024-01-01">
+                            <input type="date" class="form-control rounded-0" id="from-price" value="2024-01-01">
                         </div>
                         <div class="btn-group me-2" role="group" aria-label="Second group">
                             <span class="input-group-text rounded-0">To</span>
-                            <input type="date" class="form-control rounded-0" id="to" value="2024-02-01">
+                            <input type="date" class="form-control rounded-0" id="to-price" value="2024-02-01">
                         </div>
-                        <button type="button" class="btn btn-primary ms-auto" id="redraw">Fetch Data</button>
+                        <button type="button" class="btn btn-primary ms-auto" id="redraw-price">Fetch Data</button>
                     </div>
                 </div>
             </div>
