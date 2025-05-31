@@ -37,7 +37,7 @@ window.addEventListener('DOMContentLoaded', () => {
     });
     pieChartsSelect.value = "AT";
 });
-// TODO: implement logic for euroMap in the const EuroMap
+
 const sum = arr => arr.reduce((a, b) => a + b, 0);
 const validCbetCountries = {
     "Denmark": "dk", "Faroe Islands": "fo", "Croatia": "hr", "Netherlands": "nl", "Estonia": "ee", "Bulgaria": "bg",
