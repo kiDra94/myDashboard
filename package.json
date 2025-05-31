@@ -6,7 +6,7 @@
   },
   "scripts": {
   "start": "node server.js",
-  "start:open": "start http://localhost:3000/index.html && npm run start"
+  "start open": "node server.js & sleep 1 && sensible-browser http://localhost:3000/index.html"
 }
 }
 
