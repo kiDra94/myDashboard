@@ -10,6 +10,6 @@ jobs:
       - uses: actions/checkout@v3
       - name: Build and push the image
         run: |
-          docker login --username kiDra94 --password ${{ secrects.DOCKERPERSTOK }} ghcr.io
+          docker login --username kiDra94 --password ${{ secrets.DOCKERPERSTOK }} ghcr.io
           docker build . --tag ghcr.io/kidra94/dashboard-container-ghcr:latest
           docker push ghcr.io/kidra94/dashboard-container-ghcr:latest
