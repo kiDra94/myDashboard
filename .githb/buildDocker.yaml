@@ -1,0 +1,15 @@
+name: Build and Publish image to Docker Hub
+
+on: 
+  push:
+
+jobs:
+  build_and_publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build and push the image
+        run: |
+          docker login --username kiDra94 --password ${{ secrects.DOCKERPERSTOK }} ghcr.io
+          docker build . --tag ghcr.io/kidra94/dashboard-container-ghcr:latest
+          docker push ghcr.io/kidra94/dashboard-container-ghcr:latest
