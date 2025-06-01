@@ -10,71 +10,83 @@ To run this application, you will need:
 
 * **Node.js and npm**: If you choose to run the application directly without Docker.
 
-## Starting with Docker (Recommended)
+## Using the Public Docker Image (Recommended)
 
-The easiest and recommended way to get the application up and running is by using Docker. This ensures a consistent environment and simplifies dependency management.
+You can skip building the image yourself and directly pull the pre-built public Docker image from the GitHub Container Registry.
 
-### 1. Build the Docker Image
+### 1. Pull the Docker Image
 
-Navigate to the root directory of this project (where the `Dockerfile` is located) in your terminal and run the following command to build the Docker image:
+Run this command to pull the latest public image:
+
+```bash
+docker pull ghcr.io/kidra94/dashboard-container-ghcr:latest
+
+2. Run the Docker Container
+
+Start a container from the pulled image, mapping port 3000:
+
+docker run -p 3000:3000 --name dashboard_app_instance ghcr.io/kidra94/dashboard-container-ghcr:latest
+
+    -p 3000:3000: Maps port 3000 on your host to port 3000 in the container.
+
+    --name dashboard_app_instance: Assigns a name to your container instance (optional).
+
+    ghcr.io/kidra94/dashboard-container-ghcr:latest: The public image tag.
+
+3. Access the Application
+
+Open your web browser and navigate to:
+
+http://localhost:3000/index.html
+Starting with Docker (Build Locally)
+
+If you prefer to build the image yourself:
+1. Build the Docker Image
+
+Navigate to the root directory of this project (where the Dockerfile is located) and run:
 
 docker build -f Dockerfile -t dashboard_container .
 
-
-This command builds an image named `dashboard_container` based on your `Dockerfile`. The `.` at the end indicates that the build context is the current directory.
-
-### 2. Run the Docker Container
-
-Once the image is built, you can run a container from it. This will map port `3000` from your host machine to port `3000` inside the container, allowing you to access the application.
+2. Run the Docker Container
 
 docker run -p 3000:3000 --name dashboard_app_instance dashboard_container
 
+3. Access the Application
 
-* `-p 3000:3000`: Maps port 3000 on your host to port 3000 in the container.
+Open your web browser at:
 
-* `--name dashboard_app_instance`: Assigns a convenient name to your running container instance (you can choose any name).
-
-* `dashboard_container`: This is the name of the Docker image you built in the previous step.
-
-### 3. Access the Application
-
-After running the container, the application should be accessible in your web browser at:
-
-<http://localhost:3000>
-
-## Starting Without Docker
+http://localhost:3000/index.html
+Starting Without Docker
 
 If you prefer not to use Docker, you can run the application directly on your machine, provided you have Node.js and npm installed.
-
-### 1. Install Dependencies
-
-First, navigate to the root directory of the project in your terminal and install the necessary Node.js packages:
+1. Install Dependencies
 
 npm install
 
+2. Run the Application
 
-This command reads the `package.json` file and installs all listed dependencies.
-
-### 2. Run the Application
-
-Once the dependencies are installed, you can start the application using one of the following commands:
-
-* **Standard Start**:
+    Standard Start:
 
 npm run start
 
-
-This will start the application server. You will then need to manually open your web browser and navigate to `http://localhost:3000`.
-
-* **Start and Open in Browser**:
+    Start and Open in Browser:
 
 npm run start open
 
+Open your browser at:
 
-This command will start the application server and automatically attempt to open a new tab in your default web browser at `http://localhost:3000`.
+http://localhost:3000/index.html
+Stopping the Application
 
-## Stopping the Application
+    Docker Container: To stop the running Docker container, press Ctrl+C in the terminal where it's running. To remove it, run:
 
-* **Docker Container**: To stop the running Docker container, press `Ctrl+C` in the terminal where it's running. If you want to remove the container instance, you can then run `docker rm dashboard_app_instance`.
+docker rm dashboard_app_instance
 
-* **Without Docker**: To stop the application running via `npm`, press `Ctrl+C` in the terminal where it's running.
+    Without Docker: Press Ctrl+C in the terminal where the app is running.
+
+If you have any questions or issues running the app, feel free to open an issue here.
+
+
+---
+
+Would you like me to help you add badges or any other tips?
