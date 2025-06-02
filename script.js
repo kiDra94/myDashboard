@@ -9,7 +9,7 @@ window.addEventListener('DOMContentLoaded', () => {
     const euroMapEndPoints = Object.values(validCbetCountries);
     fillOption('country-euro-map', euroMapEndPoints);
 
-    const  productionTypEndPoints = [
+    const productionTypEndPoints = [
         "al", "am", "at", "ba", "be", "bg", "by", "ch", "cz", "de", "dk", "ee", "es", "fi", "fr",
         "gb", "ge", "gr", "hr", "hu", "ie", "it", "lt", "lu", "lv", "md", "me", "mk", "nl", "no",
         "pl", "pt", "ro", "rs", "ru", "se", "si", "sk", "tr", "ua", "xk", "eu27", "all"
@@ -25,7 +25,7 @@ const fillOption = (id, arr) => {
         option.textContent = obj.toUpperCase();
         select.appendChild(option);
     });
-    select.value = "AT"; 
+    select.value = "AT";
 }
 const sum = arr => arr.reduce((a, b) => a + b, 0);
 const validCbetCountries = {
@@ -187,57 +187,57 @@ $(document).ready(() => { // document (dom) ready!
 
 
 let myEuroMapData = {
-  chart: {
-    map: null,
-    height: 700
-  },
-  title: {
-    text: 'European Energy Map'
-  },
-  subtitle: {
-    text:
-      'Positive values indicate an import of electricity, whereas negative values show electricity exports.\n' +
-      'Source map: <a href="https://code.highcharts.com/mapdata/custom/europe.topo.json">Europe</a>'
-  },
-  mapNavigation: {
-    enabled: true,
-    buttonOptions: {
-      verticalAlign: 'bottom'
-    }
-  },
-  colorAxis: {
-    min: -1,
-    max: 1,
-    stops: [
-      [0,   '#66ff66'],
-      [0.5, '#cccccc'],
-      [1,   '#ff6666']
-    ]
-  },
-  series: [
-    {
-      // We'll populate `data` in getCbetData()
-      data: [],
-      name: 'Energy Price Index',
-      states: {
-        hover: {
-          color: '#BADA55'
-        }
-      },
-      dataLabels: {
+    chart: {
+        map: null,
+        height: 700
+    },
+    title: {
+        text: 'European Energy Map'
+    },
+    subtitle: {
+        text:
+            'Positive values indicate an import of electricity, whereas negative values show electricity exports.\n' +
+            'Source map: <a href="https://code.highcharts.com/mapdata/custom/europe.topo.json">Europe</a>'
+    },
+    mapNavigation: {
         enabled: true,
-        format: '{point.name}'
-      },
-      tooltip: {
-        pointFormat: '{point.name}: <b>{point.value:.2f}%</b>'
-      }
-    }
-  ]
+        buttonOptions: {
+            verticalAlign: 'bottom'
+        }
+    },
+    colorAxis: {
+        min: -1,
+        max: 1,
+        stops: [
+            [0, '#66ff66'],
+            [0.5, '#cccccc'],
+            [1, '#ff6666']
+        ]
+    },
+    series: [
+        {
+            // We'll populate `data` in getCbetData()
+            data: [],
+            name: 'Energy Price Index',
+            states: {
+                hover: {
+                    color: '#BADA55'
+                }
+            },
+            dataLabels: {
+                enabled: true,
+                format: '{point.name}'
+            },
+            tooltip: {
+                pointFormat: '{point.name}: <b>{point.value:.2f}%</b>'
+            }
+        }
+    ]
 };
 const getCbetData = async (id) => {
     let apiEndpoint = "http://localhost:3000/api/cbet?";
     const url = buildUrl(apiEndpoint, id);
-    let rawCountry = $(`#country-${id}`).val() || "at";   
+    let rawCountry = $(`#country-${id}`).val() || "at";
     const country = rawCountry.toLowerCase();
     const topology = await fetch(
         'https://code.highcharts.com/mapdata/custom/europe.topo.json'
@@ -246,7 +246,7 @@ const getCbetData = async (id) => {
         const cbetData = resp.countries;
         let countriesTotalSum = [];
         let totalSum = 0;
-        
+
         cbetData.forEach(obj => {
             const cntrySum = sum(obj.data)
             totalSum += Math.abs(cntrySum);
@@ -278,7 +278,11 @@ const drawEuropMap = async (id) => {
     }
 };
 
-
+const includedProductionTypes = [
+    "Hydro Run-of-River", "Biomass", "Fossil gas", "Geothermal",
+    "Hydro water reservoir", "Hydro pumped storage", "Others", "Waste",
+    "Wind onshore", "Solar"
+];
 let myPieChartData = {
     chart: {
         type: 'pie',
@@ -362,13 +366,16 @@ const getPieChart = async (id) => {
     $.get(url).then((resp) => {
         const publicPower = resp;
         let totalSum = 0;
-        publicPower.production_types.forEach(type => { totalSum += sum(type.data) });
-
+        let filteredProdTyp = publicPower.production_types.filter(type =>
+            includedProductionTypes.includes(type.name)
+        );
+        filteredProdTyp.forEach(type => { totalSum += sum(type.data) });
+        console.log(filteredProdTyp);
         myPieChartData.series = [{
             name: 'Production Type',
             colorByPoint: true,
             innerSize: '60%',
-            data: publicPower.production_types.filter(type => {
+            data: filteredProdTyp.filter(type => {
                 const value = sum(type.data);
                 return value > 0 && (value / totalSum * 100) >= 0.5;
             })
