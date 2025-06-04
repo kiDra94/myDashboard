@@ -1,6 +1,17 @@
 # My Dashboard Application
 
-This repository contains the code for "My Dashboard Application," a web application designed to provide a centralized view of various metrics or information.
+**My Dashboard Application** is a web-based dashboard that visualizes electricity generation data across Europe. The application provides an interactive, centralized view of key energy metrics, including:
+
+- **Energy prices** in various European markets  
+- **Electricity flow** between countries
+- **Types of electricity generation**, such as wind, solar, nuclear, hydro, and fossil fuels  
+
+## 🔧 Technologies Used
+
+- **[Energy Charts API](https://api.energy-charts.info/):** For retrieving real-time and historical electricity data  
+- **[Bootstrap](https://getbootstrap.com/):** For responsive and clean UI styling  
+- **[Highcharts](https://www.highcharts.com/):** For rendering interactive and visually engaging graphs  
+
 
 ## Prerequisites
 
@@ -21,75 +32,81 @@ Run this command to pull the latest public image:
 
     docker pull ghcr.io/kidra94/dashboard-container-ghcr:latest
 
-2. Run the Docker Container
+### 2. Run the Docker Container
 
 Start a container from the pulled image, mapping port 3000:
 
     docker run -p 3000:3000 --name dashboard_app_instance ghcr.io/kidra94/dashboard-container-ghcr:latest
 
-    -p 3000:3000: Maps port 3000 on your host to port 3000 in the container.
+    - p 3000:3000: Maps port 3000 on your host to port 3000 in the container.
 
-    --name dashboard_app_instance: Assigns a name to your container instance (optional).
+    - --name dashboard_app_instance: Assigns a name to your container instance (optional).
 
-    ghcr.io/kidra94/dashboard-container-ghcr:latest: The public image tag.
+    - ghcr.io/kidra94/dashboard-container-ghcr:latest: The public image tag.
 
-3. Access the Application
+### 3. Access the Application
 
-Open your web browser and navigate to:
+    Open your web browser and navigate to:
 
-http://localhost:3000/index.html
-Starting with Docker (Build Locally)
+    http://localhost:3000/index.html
 
----
+
+## Starting with Docker (Build Locally)
 
 If you prefer to build the image yourself:
-1. Build the Docker Image
+
+### 1. Build the Docker Image
 
 Navigate to the root directory of this project (where the Dockerfile is located) and run:
 
     docker build -f Dockerfile -t dashboard_container .
 
-2. Run the Docker Container
+### 2. Run the Docker Container
 
     docker run -p 3000:3000 --name dashboard_app_instance dashboard_container
 
-3. Access the Application
+### 3. Access the Application
 
 Open your web browser at:
 
 http://localhost:3000/index.html
-Starting Without Docker
+
+## Starting Without Docker
 
 If you prefer not to use Docker, you can run the application directly on your machine, provided you have Node.js and npm installed.
-1. Install Dependencies
 
-npm install
+### 1. Install Dependencies
 
-2. Run the Application
+    npm install
 
-    Standard Start:
+### 2. Run the Application
 
-npm run start
+Standard Start:
 
-    Start and Open in Browser:
+    npm run start
 
-npm run start open
+Start and Open in Browser:
 
-Open your browser at:
+    npm run start open
 
-http://localhost:3000/index.html
+### 3. Open your browser at:
+
+    http://localhost:3000/index.html
 
 ## Stopping the Application
 
-    Docker Container: To stop the running Docker container, press Ctrl+C in the terminal where it's running. To remove it, run:
+### Docker Container: 
 
-docker rm dashboard_app_instance
+To stop the running Docker container, press Ctrl+C in the terminal where it's running. 
 
-    Without Docker: Press Ctrl+C in the terminal where the app is running.
+To remove it, run:
 
-If you have any questions or issues running the app, feel free to open an issue here.
+    docker rm dashboard_app_instance
 
+### Without Docker:
+
+Press Ctrl+C in the terminal where the app is running.
 
 ---
 
-Would you like me to help you add badges or any other tips?
+### If you have any questions or issues running the app, feel free to open an issue here.
