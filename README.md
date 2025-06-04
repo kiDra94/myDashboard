@@ -18,14 +18,14 @@ You can skip building the image yourself and directly pull the pre-built public 
 
 Run this command to pull the latest public image:
 
-```bash
-docker pull ghcr.io/kidra94/dashboard-container-ghcr:latest
+
+    docker pull ghcr.io/kidra94/dashboard-container-ghcr:latest
 
 2. Run the Docker Container
 
 Start a container from the pulled image, mapping port 3000:
 
-docker run -p 3000:3000 --name dashboard_app_instance ghcr.io/kidra94/dashboard-container-ghcr:latest
+    docker run -p 3000:3000 --name dashboard_app_instance ghcr.io/kidra94/dashboard-container-ghcr:latest
 
     -p 3000:3000: Maps port 3000 on your host to port 3000 in the container.
 
@@ -40,16 +40,18 @@ Open your web browser and navigate to:
 http://localhost:3000/index.html
 Starting with Docker (Build Locally)
 
+---
+
 If you prefer to build the image yourself:
 1. Build the Docker Image
 
 Navigate to the root directory of this project (where the Dockerfile is located) and run:
 
-docker build -f Dockerfile -t dashboard_container .
+    docker build -f Dockerfile -t dashboard_container .
 
 2. Run the Docker Container
 
-docker run -p 3000:3000 --name dashboard_app_instance dashboard_container
+    docker run -p 3000:3000 --name dashboard_app_instance dashboard_container
 
 3. Access the Application
 
@@ -76,7 +78,8 @@ npm run start open
 Open your browser at:
 
 http://localhost:3000/index.html
-Stopping the Application
+
+## Stopping the Application
 
     Docker Container: To stop the running Docker container, press Ctrl+C in the terminal where it's running. To remove it, run:
 
