@@ -69,7 +69,7 @@ Navigate to the root directory of this project (where the Dockerfile is located)
 
 Open your web browser at:
 
-http://localhost:3000/index.html
+    http://localhost:3000/index.html
 
 ## Starting Without Docker
 
